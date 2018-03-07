@@ -45,6 +45,7 @@
             "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
             "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l"
         ],
+        "scenario": "scenarios/install",
         "test": [
             "@lint",
             "@unit",

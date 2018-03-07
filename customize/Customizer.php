@@ -89,7 +89,7 @@ class Customizer
         $this->enableTesting();
 
         // Make initial commit to fire off a build
-        passthru("git push origin master");
+        passthru("git push -u origin master");
 
         // Packagist:
         //    1. Register with packagist?  (tbd cli not provided)
