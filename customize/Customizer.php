@@ -14,18 +14,18 @@ class Customizer
 
     public function run()
     {
-        $local_working_dir = dirname(__DIR__);
-        $project_name = basename($local_working_dir);
+        $this->working_dir = dirname(__DIR__);
+        $this->project_name = basename($this->working_dir);
 
-        $variables = [
-            'author_name' => exec('git config user.name'),
-            'author_email' => exec('git config user.email'),
-            'copyright_year' => date('Y'),
-            'working_dir' => $local_working_dir,
-            'project_name' => $project_name,
-            'project_camelcase_name' => $this->camelCase($project_name),
-            'project_org' => getenv('GITHUB_ORG'),
-        ];
+        $this->author_name = 'git config user.name';
+        $this->author_email = exec('git config user.email');
+        $this->copyright_year = date('Y');
+        $this->project_camelcase_name = $this->camelCase($this->project_name);
+        $this->project_org = getenv('GITHUB_ORG');
+        $this->project_name_and_org = $this->project_org . '/' . $this->project_name;
+
+        $this->github_token = getenv('GITHUB_TOKEN');
+        $this->travis_token = getenv('TRAVIS_TOKEN');
 
         // Replacements:
         //    1. Project
@@ -38,12 +38,12 @@ class Customizer
         //       c. Copyright date
         //
         $replacements = [
-            '/example-project/' => $variables['project_name'],
-            '/ExampleProject/' => $variables['project_camelcase_name'],
-            '/example-org/' => $variables['project_org'],
-            '/Greg Anderson/' => $variables['author_name'],
-            '/greg.1.anderson@greenknowe\.org/' => $variables['author_email'],
-            '/Copyright (c) [0-9]*/' => "Copyright (c) ${variables['copyright_year']}",
+            '/example-project/' => $this->project_name,
+            '/ExampleProject/' => $this->project_camelcase_name,
+            '/example-org/' => $this->project_org,
+            '/Greg Anderson/' => $this->author_name,
+            '/greg.1.anderson@greenknowe\.org/' => $this->author_email,
+            '/Copyright (c) [0-9]*/' => "Copyright (c) " . $this->copyright_year,
         ];
         $replacements = array_filter($replacements);
         $this->replaceContentsOfAllTemplateFiles($replacements);
@@ -52,11 +52,11 @@ class Customizer
         //    1. Change project name
         //    2. Remove "CustomizeProject\\" from psr-4 autoloader
         //    3. Remove customize and post-install scripts
-        $this->adjustComposerJson($variables);
+        $this->adjustComposerJson();
 
         // Additional cleanup:
         //    1. Remove 'customize' directory
-        $this->cleanupCustomization($variables);
+        $this->cleanupCustomization();
 
         // Sanity checks post-customization
         //    1. Dump the autoload file
@@ -64,35 +64,46 @@ class Customizer
         passthru('composer dumpautoload');
         passthru('composer test', $status);
         if ($status) {
-            throw \Exception("Tests failed after customization - aborting.");
+            throw new \Exception("Tests failed after customization - aborting.");
         }
+
+        // Guard against messing up an existing repository
+        if (is_dir('.git')) {
+            throw new \Exception("Git repository already exists - aborting.");
+        }
+
+        // Create a fresh repository
+        passthru('git init');
 
         // Repository creation:
         //    1. Add a commit that explains all of the changes made to project.
         //    2. Create a GitHub repository via `hub create`
         //    3. Push code to GitHub
+        $this->createRepository();
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
         //    2. Enable testing on AppVeyor (tbd)
         //    3. Enable coveralls (tbd)
         //    4. Enable scrutinizer (tbd)
+        $this->enableTesting();
+
+        // Make initial commit to fire off a build
+        passthru("git push origin master");
 
         // Packagist:
         //    1. Register with packagist?  (tbd cli not provided)
 
     }
 
-    protected function adjustComposerJson($variables)
+    protected function adjustComposerJson()
     {
-        $composer_path = $variables['working_dir'] . '/composer.json';
+        $composer_path = $this->working_dir . '/composer.json';
         $composer_contents = file_get_contents($composer_path);
         $composer_data = json_decode($composer_contents, true);
 
-        var_export($composer_data);
-
         // Fix the name
-        $composer_data['name'] = "${variables['project_org']}/${variables['project_name']}";
+        $composer_data['name'] = $this->project_name_and_org;
 
         // Remove parts of autoloader that are no longer going to be used.
         unset($composer_data['autoload']['psr-4']['CustomizeProject\\']);
@@ -104,8 +115,26 @@ class Customizer
         file_put_contents($composer_path, json_encode($composer_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
-    protected function cleanupCustomization($variables)
+    protected function cleanupCustomization()
     {
+    }
+
+    protected function createRepository()
+    {
+        // TODO: ensure that 'hub' is installed and print an error message if it isn't.
+        passthru("hub create " . $this->project_name_and_org);
+    }
+
+    protected function enableTesting()
+    {
+        // If there is no travis token, log in with the github token
+        if (empty($this->travis_token)) {
+            passthru("travis login --no-interactive --github-token '{$this->github_token}'");
+            passthru("travis enable --no-interactive");
+        }
+        else {
+            passthru("travis enable --no-interactive --token '{$this->travis_token}'");
+        }
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements)
