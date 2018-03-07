@@ -88,7 +88,8 @@ class Customizer
         //    4. Enable scrutinizer (tbd)
         $this->enableTesting();
 
-        // Make initial commit
+        // Make initial commit.
+        // TODO: Make a more robust commit message including everthing that was done.
         passthru('git add .');
         passthru('git commit -m "Initial commit."');
 
@@ -131,18 +132,20 @@ class Customizer
 
     protected function enableTesting()
     {
-        // Problem: creating github via 'hub' syncs Travis, causes a failure here.
-        // repository not known to Travis CI (or no access?)
-        // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
-
         // If there is no travis token, log in with the github token
         if (empty($this->travis_token)) {
             passthru("travis login --no-interactive --github-token '{$this->github_token}'");
-            passthru("travis enable --no-interactive");
         }
         else {
-            passthru("travis enable --no-interactive --token '{$this->travis_token}'");
+            passthru("travis login --no-interactive --token '{$this->travis_token}'");
         }
+        // Problem: creating github via 'hub' syncs Travis, causes a failure here.
+        // repository not known to Travis CI (or no access?)
+        // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
+        passthru('travis sync  --no-interactive --check');
+
+        // Begin testing this repository
+        passthru("travis enable --no-interactive");
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements)
