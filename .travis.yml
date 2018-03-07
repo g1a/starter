@@ -12,10 +12,13 @@ matrix:
   include:
     - php: 7.2
       env: 'HIGHEST_LOWEST="update"'
+    - php: 7.2
     - php: 7.1
     - php: 7.0.11
-    - php: 7.0.11
-      env: 'HIGHEST_LOWEST="update --prefer-lowest'
+    - php: 5.6
+      env: 'SCENARIO=phpunit5'
+    - php: 5.6
+      env: 'SCENARIO=phpunit5 HIGHEST_LOWEST="update --prefer-lowest"'
 
 sudo: false
 

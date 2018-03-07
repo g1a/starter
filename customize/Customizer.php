@@ -88,7 +88,11 @@ class Customizer
         //    4. Enable scrutinizer (tbd)
         $this->enableTesting();
 
-        // Make initial commit to fire off a build
+        // Make initial commit
+        passthru('git add .');
+        passthru('git commit -m "Initial commit."');
+
+        // Push repository to fire off a build
         passthru("git push -u origin master");
 
         // Packagist:
@@ -127,6 +131,10 @@ class Customizer
 
     protected function enableTesting()
     {
+        // Problem: creating github via 'hub' syncs Travis, causes a failure here.
+        // repository not known to Travis CI (or no access?)
+        // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
+
         // If there is no travis token, log in with the github token
         if (empty($this->travis_token)) {
             passthru("travis login --no-interactive --github-token '{$this->github_token}'");
