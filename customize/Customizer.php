@@ -9,7 +9,16 @@ class Customizer
     public static function customize()
     {
         $customizer = new self();
-        $customizer->run();
+
+        try
+        {
+            $customizer->run();
+        }
+        catch (\Exception $e)
+        {
+            print $e->getMessage() . "\n";
+            exit ($e->getCode());
+        }
     }
 
     public function run()
@@ -70,13 +79,11 @@ class Customizer
             throw new \Exception("Tests failed after customization - aborting.");
         }
 
-        // Guard against messing up an existing repository
-        if (is_dir('.git')) {
-            throw new \Exception("Git repository already exists - aborting.");
+        // If the existing repository was not preserved, then create
+        // a new empty repository now.
+        if (!is_dir('.git')) {
+            passthru('git init');
         }
-
-        // Create a fresh repository
-        passthru('git init');
 
         // Repository creation:
         //    1. Add a commit that explains all of the changes made to project.
