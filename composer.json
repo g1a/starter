@@ -25,10 +25,9 @@
         "symfony/filesystem": "^2.8|^3|^4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5",
+        "phpunit/phpunit": "^6",
         "g-1-a/composer-test-scenarios": "^1",
         "satooshi/php-coveralls": "^2",
-        "phpunit/php-code-coverage": "~2|~4",
         "squizlabs/php_codesniffer": "^2.8"
     },
     "scripts": {
@@ -56,7 +55,7 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-            "php": "5.6"
+            "php": "7.0"
         }
     },
     "extra": {
