@@ -14,13 +14,14 @@ class Customizer
 
     public function run()
     {
-        $project_name = basename(dirname(__DIR__));
-        $project_name .= "Project";
+        $local_working_dir = dirname(__DIR__);
+        $project_name = basename($local_working_dir);
 
         $variables = [
             'author_name' => exec('git config user.name'),
             'author_email' => exec('git config user.email'),
             'copyright_year' => date('Y'),
+            'working_dir' => $local_working_dir,
             'project_name' => $project_name,
             'project_camelcase_name' => $this->camelCase($project_name),
             'project_org' => getenv('GITHUB_ORG'),
@@ -51,9 +52,11 @@ class Customizer
         //    1. Change project name
         //    2. Remove "CustomizeProject\\" from psr-4 autoloader
         //    3. Remove customize and post-install scripts
+        $this->adjustComposerJson($variables);
 
         // Additional cleanup:
         //    1. Remove 'customize' directory
+        $this->cleanupCustomization($variables);
 
         // Sanity checks post-customization
         //    1. Dump the autoload file
@@ -78,6 +81,31 @@ class Customizer
         // Packagist:
         //    1. Register with packagist?  (tbd cli not provided)
 
+    }
+
+    protected function adjustComposerJson($variables)
+    {
+        $composer_path = $variables['working_dir'] . '/composer.json';
+        $composer_contents = file_get_contents($composer_path);
+        $composer_data = json_decode($composer_contents, true);
+
+        var_export($composer_data);
+
+        // Fix the name
+        $composer_data['name'] = "${variables['project_org']}/${variables['project_name']}";
+
+        // Remove parts of autoloader that are no longer going to be used.
+        unset($composer_data['autoload']['psr-4']['CustomizeProject\\']);
+
+        // Remove unused scripts.
+        unset($composer_data['scripts']['customize']);
+        unset($composer_data['scripts']['post-install-cmd']);
+
+        file_put_contents($composer_path, json_encode($composer_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+
+    protected function cleanupCustomization($variables)
+    {
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements)
