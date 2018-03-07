@@ -143,6 +143,7 @@ class Customizer
         // repository not known to Travis CI (or no access?)
         // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
         passthru('travis sync  --no-interactive --check');
+        passthru('travis sync  --no-interactive');
 
         // Begin testing this repository
         passthru("travis enable --no-interactive");
