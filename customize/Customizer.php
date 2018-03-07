@@ -88,6 +88,12 @@ class Customizer
         if (!is_dir('.git')) {
             passthru('git init');
         }
+        else {
+            // If we are re-using an existing repo, make sure that the
+            // origin is set correctly. If there is no origin, then
+            // 'hub' will set the origin.
+            @passthru("git remote set-url origin git@github.com:{$this->project_name_and_org}.git");
+        }
 
         // Repository creation:
         //    1. Add a commit that explains all of the changes made to project.
