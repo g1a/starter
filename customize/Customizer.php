@@ -2,6 +2,7 @@
 
 namespace CustomizeProject;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class Customizer
@@ -35,6 +36,9 @@ class Customizer
 
         $this->github_token = getenv('GITHUB_TOKEN');
         $this->travis_token = getenv('TRAVIS_TOKEN');
+
+        // Copy contents of templates directory over the working directory
+        $this->placeTemplates();
 
         // Replacements:
         //    1. Project
@@ -130,8 +134,16 @@ class Customizer
         file_put_contents($composer_path, json_encode($composer_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
+    protected function placeTemplates()
+    {
+        $fs = new Filesystem();
+        $fs->mirror($this->working_dir . '/customize/templates', $this->working_dir);
+    }
+
     protected function cleanupCustomization()
     {
+        $fs = new Filesystem();
+        // $fs->remove($this->working_dir . '/customize');
     }
 
     protected function createRepository()
