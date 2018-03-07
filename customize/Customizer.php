@@ -58,11 +58,14 @@ class Customizer
         //    1. Remove 'customize' directory
         $this->cleanupCustomization();
 
+        // Update our dependencies after customizing
+        passthru('composer -n update');
+
         // Sanity checks post-customization
         //    1. Dump the autoload file
         //    2. Run the tests
-        passthru('composer dumpautoload');
-        passthru('composer test', $status);
+        passthru('composer -n dumpautoload');
+        passthru('composer -n test', $status);
         if ($status) {
             throw new \Exception("Tests failed after customization - aborting.");
         }
