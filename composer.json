@@ -1,0 +1,66 @@
+{
+    "name": "g-1-a/new",
+    "description": "Template project for PHP libraries.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Greg Anderson",
+            "email": "greg.1.anderson@greenknowe.org"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "CustomizeProject\\": "customize",
+            "ExampleProject\\": "src"
+        }
+    },
+    "autoload-dev":{
+        "psr-4":{
+            "ExampleProject\\": "tests/src"
+        }
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "symfony/finder": "^2.8|^3|^4",
+        "symfony/filesystem": "^2.8|^3|^4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8",
+        "g-1-a/composer-test-scenarios": "^1",
+        "satooshi/php-coveralls": "^2",
+        "phpunit/php-code-coverage": "~2|~4",
+        "squizlabs/php_codesniffer": "^2.8"
+    },
+    "scripts": {
+        "customize": [
+            "CustomizeProject\\Customizer::customize"
+        ],
+        "xxx-post-install-cmd": [
+            "@customize"
+        ],
+        "cs": "phpcs --standard=PSR2 -n src",
+        "cbf": "phpcbf --standard=PSR2 -n src",
+        "unit": "phpunit --colors=always",
+        "lint": [
+            "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
+            "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l"
+        ],
+        "test": [
+            "@lint",
+            "@unit",
+            "@cs"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "5.6"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}
