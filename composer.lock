@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "43bbfee5efe63508eb1d26835ea0964e",
+    "content-hash": "f63c941ffab1a0f85135ce438778ae63",
     "packages": [
         {
             "name": "symfony/filesystem",
@@ -162,20 +162,21 @@
         },
         {
             "name": "g-1-a/composer-test-scenarios",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/g-1-a/composer-test-scenarios.git",
-                "reference": "78733a4a8dea12d51aafada30932e666f68c13e7"
+                "reference": "240841a15f332750d5f0499371f880e9ea5b18cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/g-1-a/composer-test-scenarios/zipball/78733a4a8dea12d51aafada30932e666f68c13e7",
-                "reference": "78733a4a8dea12d51aafada30932e666f68c13e7",
+                "url": "https://api.github.com/repos/g-1-a/composer-test-scenarios/zipball/240841a15f332750d5f0499371f880e9ea5b18cc",
+                "reference": "240841a15f332750d5f0499371f880e9ea5b18cc",
                 "shasum": ""
             },
             "bin": [
                 "scripts/create-scenario",
+                "scripts/dependency-licenses",
                 "scripts/install-scenario"
             ],
             "type": "library",
@@ -190,45 +191,7 @@
                 }
             ],
             "description": "Useful scripts for testing multiple sets of Composer dependencies.",
-            "time": "2018-01-17T20:25:16+00:00"
-        },
-        {
-            "name": "g-1-a/phpunit-5-adapter",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/g-1-a/phpunit-5-adapter.git",
-                "reference": "f7412390b8ca57704bf388f3780da06d87faef87"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/g-1-a/phpunit-5-adapter/zipball/f7412390b8ca57704bf388f3780da06d87faef87",
-                "reference": "f7412390b8ca57704bf388f3780da06d87faef87",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PHPUnit\\Framework\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Greg Anderson",
-                    "email": "greg.1.anderson@greenknowe.org"
-                }
-            ],
-            "description": "Allows simple tests written for PHPUnit 6 to work with PHPUnit 5.",
-            "time": "2018-03-07T08:12:30+00:00"
+            "time": "2018-03-07T21:36:05+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

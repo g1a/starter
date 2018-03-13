@@ -27,7 +27,6 @@
     "require-dev": {
         "phpunit/phpunit": "^5",
         "g-1-a/composer-test-scenarios": "^1",
-        "g-1-a/phpunit-5-adapter": "^1",
         "satooshi/php-coveralls": "^2",
         "squizlabs/php_codesniffer": "^2.8"
     },
