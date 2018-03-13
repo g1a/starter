@@ -26,10 +26,14 @@ class Customizer
     {
         $this->working_dir = dirname(__DIR__);
         $this->project_name = basename($this->working_dir);
+        $composer_path = $working_dir . '/composer.json';
+
+        $composer_data = $this->readComposerJson($composer_path);
 
         $this->author_name = 'git config user.name';
         $this->author_email = exec('git config user.email');
         $this->copyright_year = date('Y');
+        $this->creation_date = date('Y/M/d');
         $this->project_camelcase_name = $this->camelCase($this->project_name);
         $this->project_org = getenv('GITHUB_ORG');
         $this->project_name_and_org = $this->project_org . '/' . $this->project_name;
@@ -50,12 +54,22 @@ class Customizer
         //       b. Author email address
         //       c. Copyright date
         //
+        $original_project_name_and_org = explode('/', $composer_data['name'], 2);
         $replacements = [
+            '/{{CREATION_DATE}}/' => $this->creation_date,
+            '/{{TEMPLATE_PROJECT}}/' => $original_project_name_and_org[1],
+            '/{{TEMPLATE_ORG}}/' => $original_project_name_and_org[0],
+            '/{{PROJECT}}/' => $this->project_name,
+            '/{{PROJECT_CAMELCASE_NAME}}/' => $this->project_camelcase_name,
+            '/{{ORG}}/' => $this->project_org,
             '/example-project/' => $this->project_name,
             '/ExampleProject/' => $this->project_camelcase_name,
             '/example-org/' => $this->project_org,
-            '/Greg Anderson/' => $this->author_name,
-            '/greg.1.anderson@greenknowe\.org/' => $this->author_email,
+            $original_project_name_and_org[1] => $this->project_name,
+            $original_project_name_and_org[0] => $this->project_org,
+            $this->camelCase($original_project_name_and_org[1]) => $this->project_camelcase_name,
+            "/{$composer_data['authors'][0]['name']}/" => $this->author_name,
+            "/{$composer_data['authors'][0]['email']}/" => $this->author_email,
             '/Copyright (c) [0-9]*/' => "Copyright (c) " . $this->copyright_year,
         ];
         $replacements = array_filter($replacements);
@@ -65,7 +79,7 @@ class Customizer
         //    1. Change project name
         //    2. Remove "CustomizeProject\\" from psr-4 autoloader
         //    3. Remove customize and post-install scripts
-        $this->adjustComposerJson();
+        $this->adjustComposerJson($composer_path, $composer_data);
 
         // Additional cleanup:
         //    1. Remove 'customize' directory
@@ -116,17 +130,19 @@ class Customizer
         // Push repository to fire off a build
         passthru("git push -u origin master");
 
-        // Packagist:
+        // Composer:
         //    1. Register with packagist?  (tbd cli not provided)
-
+        //    2. Register with dependencies.io (tbd)
     }
 
-    protected function adjustComposerJson()
+    protected function readComposerJson($composer_path)
     {
-        $composer_path = $this->working_dir . '/composer.json';
         $composer_contents = file_get_contents($composer_path);
-        $composer_data = json_decode($composer_contents, true);
+        return json_decode($composer_contents, true);
+    }
 
+    protected function adjustComposerJson($composer_path, $composer_data)
+    {
         // Fix the name
         $composer_data['name'] = $this->project_name_and_org;
 

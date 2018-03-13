@@ -52,7 +52,7 @@
             "@customize"
         ],
         "post-update-cmd": [
-            "create-scenario phpunit5 'g-1-a/phpunit-5-adapter:^1' 'phpunit/phpunit:^5' --platform-php '5.6'"
+            "create-scenario phpunit5 'g-1-a/phpunit-5-adapter:^1.0.1' 'phpunit/phpunit:^5' --platform-php '5.6'"
         ]
     },
     "config": {

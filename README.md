@@ -18,13 +18,12 @@ This project comes with a number of configuration files already set up for a num
 The following things are provided:
 
 - Project information
-  - [composer.json](/composer.json): Fills out initial project information
+  - [composer.json](/composer.json): Automatically customized with project-specific information.
     - Project name (taken from `create-project` project name argument)
     - Author name and email address (from git configuration)
-    - Copyright notice (current year)
   - [README.md](/customize/templates/README.md): Example template with badges to get you started.
   - [CHANGELOG.md](/CHANGELOG.md): Blank slate provided in the hopes that releases may be recorded here.
-  - [LICENSE](/LICENSE): Defaults to MIT.
+  - [LICENSE](/LICENSE): Defaults to MIT. Will automatically be updated with dependency licenses and copyright year every time 'composer update' is run.
 - Project metadata
   - [.editorconfig](/.editorconfig): Set up for PSR-2 conventions for compliant editors.
   - [.gitattributes](/.gitattributes): Ensures that tests, build results and so on are not exported to Packagist.
@@ -41,10 +40,16 @@ The following things are provided:
     - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider.
   - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically.
   - **Appveyor:** An appveyor configuration file is provided, but project must be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
-  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default.
   - **Scrutinizer:** Project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
-- Code Sharing
+  - Provides handy composer scripts:
+    - `composer test`: Run all tests.
+    - `composer unit`: Run just the phpunit tests.
+    - `composer lint`: Run the php linter.
+    - `composer cs`: Run the code sniffer to check for PSR-2 compliance.
+    - `composer cbf`: Fix code style violations where possible.
+- Composer
   - **Packagist:** Project must be manually submitted to [packagist.org](https://packagist.org)
   - **Dependencies:** A [dependencies.yml](/dependencies.yml) is provided; project must be enabled on [dependencies.io](https://www.dependencies.io/)
+  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default.
 
 After the `composer create-project` completes running, your new project will exist on GitHub, and the first test (with placeholder code) should already be queued to run on Travis. Run through the list above, customize as needed, enable services that were not automatically configured, and start writing your own code.
