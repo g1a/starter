@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "92657ec04a2c2d66be63547719ff9227",
+    "content-hash": "8ee206d8e76f0ce79ac477469e6dd3a0",
     "packages": [
         {
             "name": "symfony/filesystem",
@@ -192,44 +192,6 @@
             ],
             "description": "Useful scripts for testing multiple sets of Composer dependencies.",
             "time": "2018-03-07T21:36:05+00:00"
-        },
-        {
-            "name": "g-1-a/phpunit-5-adapter",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/g-1-a/phpunit-5-adapter.git",
-                "reference": "1b64fc57279044539d80fd43091b623a62489880"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/g-1-a/phpunit-5-adapter/zipball/1b64fc57279044539d80fd43091b623a62489880",
-                "reference": "1b64fc57279044539d80fd43091b623a62489880",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PHPUnit\\Framework\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Greg Anderson",
-                    "email": "greg.1.anderson@greenknowe.org"
-                }
-            ],
-            "description": "Allows simple tests written for PHPUnit 6 to work with PHPUnit 5.",
-            "time": "2018-03-07T22:21:24+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
