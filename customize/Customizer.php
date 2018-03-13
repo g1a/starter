@@ -26,11 +26,11 @@ class Customizer
     {
         $this->working_dir = dirname(__DIR__);
         $this->project_name = basename($this->working_dir);
-        $composer_path = $working_dir . '/composer.json';
+        $composer_path = $this->working_dir . '/composer.json';
 
         $composer_data = $this->readComposerJson($composer_path);
 
-        $this->author_name = 'git config user.name';
+        $this->author_name = exec('git config user.name');
         $this->author_email = exec('git config user.email');
         $this->copyright_year = date('Y');
         $this->creation_date = date('Y/M/d');
@@ -44,7 +44,13 @@ class Customizer
         // Copy contents of templates directory over the working directory
         $this->placeTemplates();
 
-        // Replacements:
+        // Composer customizations:
+        //    1. Change project name
+        //    2. Remove "CustomizeProject\\" from psr-4 autoloader
+        //    3. Remove customize and post-install scripts
+        $this->adjustComposerJson($composer_path, $composer_data);
+
+        // General replacements:
         //    1. Project
         //       a. Project name (e.g. example-project)
         //       b. Project camelcase name (e.g. ExampleProject)
@@ -53,33 +59,28 @@ class Customizer
         //       a. Author name
         //       b. Author email address
         //       c. Copyright date
-        //
+        // Note that these apply to all files in the project, including
+        // composer.json (also customized above).
         $original_project_name_and_org = explode('/', $composer_data['name'], 2);
         $replacements = [
             '/{{CREATION_DATE}}/' => $this->creation_date,
-            '/{{TEMPLATE_PROJECT}}/' => $original_project_name_and_org[1],
-            '/{{TEMPLATE_ORG}}/' => $original_project_name_and_org[0],
             '/{{PROJECT}}/' => $this->project_name,
             '/{{PROJECT_CAMELCASE_NAME}}/' => $this->project_camelcase_name,
             '/{{ORG}}/' => $this->project_org,
             '/example-project/' => $this->project_name,
             '/ExampleProject/' => $this->project_camelcase_name,
             '/example-org/' => $this->project_org,
-            $original_project_name_and_org[1] => $this->project_name,
-            $original_project_name_and_org[0] => $this->project_org,
-            $this->camelCase($original_project_name_and_org[1]) => $this->project_camelcase_name,
+            '/' . $original_project_name_and_org[1] . '/' => $this->project_name,
+            '/' . $original_project_name_and_org[0] . '/' => $this->project_org,
+            '/' . $this->camelCase($original_project_name_and_org[1]) . '/' => $this->project_camelcase_name,
             "/{$composer_data['authors'][0]['name']}/" => $this->author_name,
             "/{$composer_data['authors'][0]['email']}/" => $this->author_email,
             '/Copyright (c) [0-9]*/' => "Copyright (c) " . $this->copyright_year,
+            '/{{TEMPLATE_PROJECT}}/' => $original_project_name_and_org[1],
+            '/{{TEMPLATE_ORG}}/' => $original_project_name_and_org[0],
         ];
         $replacements = array_filter($replacements);
         $this->replaceContentsOfAllTemplateFiles($replacements);
-
-        // Composer customizations:
-        //    1. Change project name
-        //    2. Remove "CustomizeProject\\" from psr-4 autoloader
-        //    3. Remove customize and post-install scripts
-        $this->adjustComposerJson($composer_path, $composer_data);
 
         // Additional cleanup:
         //    1. Remove 'customize' directory
