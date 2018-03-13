@@ -70,9 +70,8 @@ class Customizer
             '/example-project/' => $this->project_name,
             '/ExampleProject/' => $this->project_camelcase_name,
             '/example-org/' => $this->project_org,
-            '/' . $original_project_name_and_org[1] . '/' => $this->project_name,
-            '/' . $original_project_name_and_org[0] . '/' => $this->project_org,
-            '/' . $this->camelCase($original_project_name_and_org[1]) . '/' => $this->project_camelcase_name,
+            "#{$composer_data['name']}#" => $this->project_org . '/' . $this->project_name,
+            '#' . $this->camelCase($original_project_name_and_org[1]) . '#' => $this->project_camelcase_name,
             "/{$composer_data['authors'][0]['name']}/" => $this->author_name,
             "/{$composer_data['authors'][0]['email']}/" => $this->author_email,
             '/Copyright (c) [0-9]*/' => "Copyright (c) " . $this->copyright_year,
@@ -87,21 +86,18 @@ class Customizer
         $this->cleanupCustomization();
 
         // Update our dependencies after customizing
-        passthru('composer -n update');
+        $this->passthru('composer -n update');
 
         // Sanity checks post-customization
         //    1. Dump the autoload file
         //    2. Run the tests
-        passthru('composer -n dumpautoload');
-        passthru('composer -n test', $status);
-        if ($status) {
-            throw new \Exception("Tests failed after customization - aborting.");
-        }
+        $this->passthru('composer -n dumpautoload');
+        $this->passthru('composer -n test');
 
         // If the existing repository was not preserved, then create
         // a new empty repository now.
         if (!is_dir('.git')) {
-            passthru('git init');
+            $this->passthru('git init');
         }
         else {
             // If we are re-using an existing repo, make sure that the
@@ -125,11 +121,11 @@ class Customizer
 
         // Make initial commit.
         // TODO: Make a more robust commit message including everthing that was done.
-        passthru('git add .');
-        passthru('git commit -m "Initial commit."');
+        $this->passthru('git add .');
+        $this->passthru('git commit -m "Initial commit."');
 
         // Push repository to fire off a build
-        passthru("git push -u origin master");
+        $this->passthru("git push -u origin master");
 
         // Composer:
         //    1. Register with packagist?  (tbd cli not provided)
@@ -222,5 +218,13 @@ class Customizer
     protected function camelCase($str)
     {
         return str_replace('-', '', ucwords($str, '-'));
+    }
+
+    protected function passthru($cmd)
+    {
+        passthru($cmd, $status);
+        if ($status != 0) {
+            throw new \Exception('Command failed with exit code ' . $status);
+        }
     }
 }
