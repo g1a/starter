@@ -1,5 +1,5 @@
 {
-    "name": "g-1-a/starter",
+    "name": "greg-1-anderson/starter",
     "description": "Template project for PHP libraries.",
     "license": "MIT",
     "authors": [
@@ -8,21 +8,22 @@
             "email": "greg.1.anderson@greenknowe.org"
         }
     ],
-    "autoload":{
-        "psr-4":{
-            "CustomizeProject\\": "customize",
-            "ExampleProject\\": "src"
+    "autoload": {
+        "psr-4": {
+            "Starter\\": "src"
         }
     },
-    "autoload-dev":{
-        "psr-4":{
-            "ExampleProject\\": "tests/src"
+    "autoload-dev": {
+        "psr-4": {
+            "Starter\\": "tests/src"
         }
     },
     "require": {
         "php": ">=5.5.0",
-        "symfony/finder": "^2.8|^3|^4",
-        "symfony/filesystem": "^2.8|^3|^4"
+        "knplabs/github-api": "^2.7",
+        "php-http/guzzle6-adapter": "^1.1",
+        "symfony/filesystem": "^2.8|^3|^4",
+        "symfony/finder": "^2.8|^3|^4"
     },
     "require-dev": {
         "g-1-a/composer-test-scenarios": "^1",
@@ -31,8 +32,8 @@
         "squizlabs/php_codesniffer": "^2.8"
     },
     "scripts": {
-        "customize": [
-            "CustomizeProject\\Customizer::customize"
+        "experiment": [
+            "CustomizeProject\\Customizer::experiment"
         ],
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
