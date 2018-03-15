@@ -2,13 +2,31 @@
 
 namespace CustomizeProject;
 
+use Github\HttpClient\Message\ResponseMediator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
+use Http\Adapter\Guzzle6\Client as GuzzleClient;
+use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+
 class Customizer
 {
+    /**
+     * It is necessary to explicitly include certain Guzzle files when
+     * running code via a Composer script.
+     */
+    public static function loadGuzzleFunctions()
+    {
+        require __DIR__ . '/../vendor/guzzlehttp/guzzle/src/functions_include.php';
+        require __DIR__ . '/../vendor/guzzlehttp/psr7/src/functions_include.php';
+        require __DIR__ . '/../vendor/guzzlehttp/promises/src/functions_include.php';
+    }
+
     public static function customize()
     {
+        static::loadGuzzleFunctions();
         $customizer = new self();
 
         try
@@ -22,8 +40,25 @@ class Customizer
         }
     }
 
+    public function authenticatedUsername()
+    {
+        $client = new \Github\Client();
+        $client->authenticate($this->github_token, null, \Github\Client::AUTH_HTTP_TOKEN);
+
+        // The code below may eventually be replaced with:
+        //     $authenticated = $client->api('users')->authenticated();
+        // https://github.com/KnpLabs/php-github-api/pull/694
+        $response = $client->getHttpClient()->get('/user', []);
+        $authenticated = ResponseMediator::getContent($response);
+
+        return $authenticated['login'];
+    }
+
     public function run()
     {
+        $this->github_token = getenv('GITHUB_TOKEN');
+        $this->travis_token = getenv('TRAVIS_TOKEN');
+
         $this->working_dir = dirname(__DIR__);
         $this->project_name = basename($this->working_dir);
         $composer_path = $this->working_dir . '/composer.json';
@@ -35,11 +70,8 @@ class Customizer
         $this->copyright_year = date('Y');
         $this->creation_date = date('Y/M/d');
         $this->project_camelcase_name = $this->camelCase($this->project_name);
-        $this->project_org = getenv('GITHUB_ORG');
+        $this->project_org = getenv('GITHUB_ORG') ?: $this->authenticatedUsername();
         $this->project_name_and_org = $this->project_org . '/' . $this->project_name;
-
-        $this->github_token = getenv('GITHUB_TOKEN');
-        $this->travis_token = getenv('TRAVIS_TOKEN');
 
         // Copy contents of templates directory over the working directory
         $this->placeTemplates();
@@ -61,7 +93,6 @@ class Customizer
         //       c. Copyright date
         // Note that these apply to all files in the project, including
         // composer.json (also customized above).
-        $original_project_name_and_org = explode('/', $composer_data['name'], 2);
         $replacements = [
             '/{{CREATION_DATE}}/' => $this->creation_date,
             '/{{PROJECT}}/' => $this->project_name,
@@ -71,12 +102,12 @@ class Customizer
             '/ExampleProject/' => $this->project_camelcase_name,
             '/example-org/' => $this->project_org,
             "#{$composer_data['name']}#" => $this->project_org . '/' . $this->project_name,
-            '#' . $this->camelCase($original_project_name_and_org[1]) . '#' => $this->project_camelcase_name,
+            '#' . $this->camelCase($this->project_name) . '#' => $this->project_camelcase_name,
             "/{$composer_data['authors'][0]['name']}/" => $this->author_name,
             "/{$composer_data['authors'][0]['email']}/" => $this->author_email,
             '/Copyright (c) [0-9]*/' => "Copyright (c) " . $this->copyright_year,
-            '/{{TEMPLATE_PROJECT}}/' => $original_project_name_and_org[1],
-            '/{{TEMPLATE_ORG}}/' => $original_project_name_and_org[0],
+            '/{{TEMPLATE_PROJECT}}/' => $this->project_name,
+            '/{{TEMPLATE_ORG}}/' => $this->project_org,
         ];
         $replacements = array_filter($replacements);
         $this->replaceContentsOfAllTemplateFiles($replacements);

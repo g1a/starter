@@ -4,11 +4,14 @@ A starter PHP project with many services and features pre-configured. Simply clo
 
 ## Usage
 
-To get started, export your [GitHub personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) and the GitHub account or organization where you would like the project to be created.
+To get started, export your [GitHub personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) and then create a new project.
 ```
 $ export GITHUB_TOKEN='[REDACTED]'
-$ export GITHUB_ORG='my-github-username-or-org'
 $ composer create-project g-1-a/starter my-new-project
+```
+The new project will be owned by the currently-authenticated user. If you would like to create a new project in an organization instead, then set the `GITHUB_ORG` environment variable.
+```
+$ export GITHUB_ORG='my-github-username-or-org'
 ```
 
 ## Features
