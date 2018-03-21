@@ -136,6 +136,8 @@ class Customizer
         // a new empty repository now.
         if (!is_dir('.git')) {
             $this->passthru('git init');
+            $this->passthru('git add .');
+            $this->passthru('git commit -m "Initial commit of unmodified template project."');
         }
         else {
             // If we are re-using an existing repo, make sure that the
@@ -163,7 +165,7 @@ class Customizer
         // Make initial commit.
         // TODO: Make a more robust commit message including everthing that was done.
         $this->passthru('git add .');
-        $this->passthru('git commit -m "Initial commit."');
+        $this->passthru('git commit -m "Template project customizations."');
 
         // Push repository to fire off a build
         $this->passthru("git push -u origin master");
@@ -225,7 +227,10 @@ class Customizer
         // repository not known to Travis CI (or no access?)
         // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
         passthru('travis sync  --no-interactive --check');
-        passthru('travis sync  --no-interactive');
+        $status = 1;
+        while ($status != 0) {
+            passthru('travis sync  --no-interactive', $status);
+        }
 
         // Begin testing this repository
         passthru("travis enable --no-interactive", $status);
