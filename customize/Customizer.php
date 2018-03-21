@@ -228,7 +228,16 @@ class Customizer
         passthru('travis sync  --no-interactive');
 
         // Begin testing this repository
-        passthru("travis enable --no-interactive");
+        passthru("travis enable --no-interactive", $status);
+
+        // If 'travis enable' did not work, perhaps Travis needs more
+        // time before the new GitHub repository shows up.
+        if ($status != 0) {
+            print "Waiting for GitHub to advertise the new repository...\n";
+            sleep(10);
+            passthru('travis sync  --no-interactive');
+            $this->passthru("travis enable --no-interactive");
+        }
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements)
