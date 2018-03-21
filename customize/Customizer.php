@@ -227,21 +227,18 @@ class Customizer
         // repository not known to Travis CI (or no access?)
         // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
         passthru('travis sync  --no-interactive --check');
-        $status = 1;
-        while ($status != 0) {
-            passthru('travis sync  --no-interactive', $status);
-        }
 
         // Begin testing this repository
         passthru("travis enable --no-interactive", $status);
 
         // If 'travis enable' did not work, perhaps Travis needs more
         // time before the new GitHub repository shows up.
-        if ($status != 0) {
+        // TODO: We should *eventually* give up.
+        while ($status != 0) {
             print "Waiting for GitHub to advertise the new repository...\n";
             sleep(10);
             passthru('travis sync  --no-interactive');
-            $this->passthru("travis enable --no-interactive");
+            passthru("travis enable --no-interactive", $status);
         }
     }
 
