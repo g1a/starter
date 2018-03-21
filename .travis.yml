@@ -11,14 +11,14 @@ matrix:
   fast_finish: true
   include:
     - php: 7.2
-      env: 'HIGHEST_LOWEST="update"'
+      env: 'DEPENCENCIES=highest'
     - php: 7.2
     - php: 7.1
     - php: 7.0.11
     - php: 5.6
       env: 'SCENARIO=phpunit5'
     - php: 5.6
-      env: 'SCENARIO=phpunit5 HIGHEST_LOWEST="update --prefer-lowest"'
+      env: 'SCENARIO=phpunit5 DEPENDENCIES=lowest'
 
 sudo: false
 
@@ -27,7 +27,7 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - 'composer scenario "${SCENARIO}" "${HIGHEST_LOWEST-install}"'
+  - 'composer scenario "${SCENARIO}" "${DEPENDENCIES}"'
 
 script:
   - composer test

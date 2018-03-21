@@ -40,17 +40,21 @@ class Customizer
         }
     }
 
+    /**
+     * Create a new GitHub API client and authenticate.
+     */
+    public function createGitHubClient($token)
+    {
+        $this->gitHubAPI = new \Github\Client();
+        $this->gitHubAPI->authenticate($token, null, \Github\Client::AUTH_HTTP_TOKEN);
+    }
+
+    /**
+     * Get the currently-authenticated username
+     */
     public function authenticatedUsername()
     {
-        $client = new \Github\Client();
-        $client->authenticate($this->github_token, null, \Github\Client::AUTH_HTTP_TOKEN);
-
-        // The code below may eventually be replaced with:
-        //     $authenticated = $client->api('users')->authenticated();
-        // https://github.com/KnpLabs/php-github-api/pull/694
-        $response = $client->getHttpClient()->get('/user', []);
-        $authenticated = ResponseMediator::getContent($response);
-
+        $authenticated = $this->gitHubAPI->api('current_user')->show();
         return $authenticated['login'];
     }
 
@@ -58,6 +62,9 @@ class Customizer
     {
         $this->github_token = getenv('GITHUB_TOKEN');
         $this->travis_token = getenv('TRAVIS_TOKEN');
+
+        // TODO: Notify and quit if github_token is not provided, or fails to authenticate.
+        $this->createGitHubClient($this->github_token);
 
         $this->working_dir = dirname(__DIR__);
         $this->project_name = basename($this->working_dir);
@@ -135,6 +142,9 @@ class Customizer
             // origin is set correctly. If there is no origin, then
             // 'hub' will set the origin.
             @passthru("git remote set-url origin git@github.com:{$this->project_name_and_org}.git");
+            @passthru("git remote set-url origin --push git@github.com:{$this->project_name_and_org}.git");
+            // Remove the 'composer' remote if it exists.
+            @passthru("git remote remove composer");
         }
 
         // Repository creation:

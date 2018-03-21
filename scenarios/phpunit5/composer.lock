@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "53845c95b43852f94a78852791884df5",
+    "content-hash": "655fae0bf6a737b97a2e8c1c79996e90",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -1080,16 +1080,16 @@
         },
         {
             "name": "g-1-a/composer-test-scenarios",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/g-1-a/composer-test-scenarios.git",
-                "reference": "240841a15f332750d5f0499371f880e9ea5b18cc"
+                "reference": "ed9e89e0fa1b4503a05921e0ee97119bd5621f40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/g-1-a/composer-test-scenarios/zipball/240841a15f332750d5f0499371f880e9ea5b18cc",
-                "reference": "240841a15f332750d5f0499371f880e9ea5b18cc",
+                "url": "https://api.github.com/repos/g-1-a/composer-test-scenarios/zipball/ed9e89e0fa1b4503a05921e0ee97119bd5621f40",
+                "reference": "ed9e89e0fa1b4503a05921e0ee97119bd5621f40",
                 "shasum": ""
             },
             "bin": [
@@ -1109,7 +1109,7 @@
                 }
             ],
             "description": "Useful scripts for testing multiple sets of Composer dependencies.",
-            "time": "2018-03-07T21:36:05+00:00"
+            "time": "2018-03-19T05:31:48+00:00"
         },
         {
             "name": "myclabs/deep-copy",
