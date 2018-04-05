@@ -357,7 +357,7 @@ class Customizer
         $uri = "repositories/g/$project/inspections";
         $data = ['branch' => 'master'];
         $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
-        $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/"
+        $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/";
         $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[Done]($scrutinizer_url)");
     }
 
