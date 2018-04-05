@@ -13,8 +13,31 @@ The new project will be owned by the currently-authenticated user. If you would 
 ```
 $ export GITHUB_ORG='my-github-username-or-org'
 ```
+Optionally (and recommended), you may also export personal access tokens for Appveyor (Windows testing) and Scrutinizer (static analysis tool). If you do this, then these services will be enabled for every project that you create with this starter template.
 
-## Features
+### Access Token Generation
+
+| Export                         | Token Generation URL       
+| ------------------------------ | -------------------------- 
+| exoirt GITHUB_TOKEN='...'      | [Generate GitHub token](https://github.com/settings/tokens)
+| export APPVEYOR_TOKEN='...'    | [Generate Appveyor token](https://ci.appveyor.com/api-token)   
+| export SCRUTINIZER_TOKEN='...' | [Generate Scrutinizer token](https://scrutinizer-ci.com/profile/applications)
+
+### Manual Service Configuration
+
+If the personal access token for these services is not set up, then the service may be manually configured later. In addition, this project is also configured for use with Packagist, Dependencies.io and Coveralls; these services only need to be authorized through their web interface to enable them for projects created with this template.
+
+| Feature                   | Manual Setup URL
+| ------------------------- | ----------------
+| Collaborative repository  | [Create GitHub repository](https://github.com/new)
+| Linux permutation testing | [Enable Travis CI](https://travis-ci.org/profile)
+| Windows testing           | [Enable Appveyor CI](https://ci.appveyor.com/projects/new)
+| Static analysis           | [Enable Scrutinizer CI](https://scrutinizer-ci.com/g/new)
+| Code coverage             | [Enable Coveralls](https://coveralls.io/repos/new)
+| Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
+| Dependency updates        | [Enable Dependencies.io](https://app.dependencies.io/add-project)
+
+## Description of Features
 
 This project comes with a number of configuration files already set up for a number of services. A Composer post-install hook makes further modifications, and, where possible, makes API calls to complete the setup for some services.
 
