@@ -91,6 +91,25 @@ class Customizer
         $this->project_org = getenv('GITHUB_ORG') ?: $this->authenticatedUsername();
         $this->project_name_and_org = $this->project_org . '/' . $this->project_name;
 
+        // If the existing repository was not preserved, then create
+        // a new empty repository now. Otherwise, just fix up the
+        // existing remote to point to the new location.
+        if (!is_dir('.git')) {
+            $this->passthru('git init');
+            $this->passthru('git add .');
+            $this->passthru('git reset HEAD customize');
+            $this->passthru('git commit -m "Initial commit of unmodified template project."');
+        }
+        else {
+            // If we are re-using an existing repo, make sure that the
+            // origin is set correctly. If there is no origin, then
+            // 'hub' will set the origin.
+            @passthru("git remote set-url origin git@github.com:{$this->project_name_and_org}.git");
+            @passthru("git remote set-url origin --push git@github.com:{$this->project_name_and_org}.git");
+            // Remove the 'composer' remote if it exists.
+            @passthru("git remote remove composer");
+        }
+
         // Copy contents of templates directory over the working directory
         $this->placeTemplates();
 
@@ -142,23 +161,6 @@ class Customizer
         //    2. Run the tests
         $this->passthru('composer -n dumpautoload');
         $this->passthru('composer -n test');
-
-        // If the existing repository was not preserved, then create
-        // a new empty repository now.
-        if (!is_dir('.git')) {
-            $this->passthru('git init');
-            $this->passthru('git add .');
-            $this->passthru('git commit -m "Initial commit of unmodified template project."');
-        }
-        else {
-            // If we are re-using an existing repo, make sure that the
-            // origin is set correctly. If there is no origin, then
-            // 'hub' will set the origin.
-            @passthru("git remote set-url origin git@github.com:{$this->project_name_and_org}.git");
-            @passthru("git remote set-url origin --push git@github.com:{$this->project_name_and_org}.git");
-            // Remove the 'composer' remote if it exists.
-            @passthru("git remote remove composer");
-        }
 
         // Repository creation:
         //    1. Add a commit that explains all of the changes made to project.
