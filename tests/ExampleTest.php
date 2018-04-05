@@ -4,9 +4,6 @@ namespace ExampleProject;
 
 use PHPUnit\Framework\TestCase;
 
-// To go back to PHPUnit 5 (e.g. for PHP 5.6 support):
-// use \PHPUnit_Framework_TestCase as TestCase;
-
 class ExampleTest extends TestCase
 {
     public function exampleTestValues()
