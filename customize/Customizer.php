@@ -184,6 +184,9 @@ class Customizer
         //    1. Enable testing via Scrutinizer
         $this->enableScrutinizer($this->project_name_and_org);
 
+        // TODO: Move this earlier
+        $this->enableAppveyor($this->project_name_and_org);
+
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
         //    2. Register with dependencies.io (TODO API not available)
@@ -231,7 +234,6 @@ class Customizer
     protected function enableTesting()
     {
         $this->enableTravis();
-        $this->enableAppveyor($this->project_name_and_org);
     }
 
     protected function enableTravis()
