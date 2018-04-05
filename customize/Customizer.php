@@ -204,7 +204,7 @@ class Customizer
     protected function injectGitHubToken($remote = 'origin')
     {
         // If the remote was passed as an identifier, convert it to a URL
-        if (preg_match('#[a-zA-Z_-]*', $remote)) {
+        if (preg_match('#[a-zA-Z_-]*#', $remote)) {
             $remote = exec("git config --get remote.$remote.url");
         }
         // If the remote was provided as 'git@github.com:org/project.git',
