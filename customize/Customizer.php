@@ -180,7 +180,8 @@ class Customizer
         // Push updated changes to fire off a build
         $this->push();
 
-        // Code analysis:
+        // We need to explicitly tell Scrutinizer to start analyzing.
+        $this->startScrutinizerInspection($this->project_name_and_org);
 
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
