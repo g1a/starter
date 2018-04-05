@@ -165,7 +165,8 @@ class Customizer
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
         //    2. Enable testing on AppVeyor
-        //    3. Enable coveralls (TODO API not available)
+        //    3. Enable testing via Scrutinizer
+        //    4. Enable coveralls (TODO API not available)
         $this->enableTesting($this->project_name_and_org);
 
         // Replace contents of template files again with service replacements
@@ -180,8 +181,6 @@ class Customizer
         $this->push();
 
         // Code analysis:
-        //    1. Enable testing via Scrutinizer
-        $this->enableScrutinizer($this->project_name_and_org);
 
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
@@ -250,6 +249,7 @@ class Customizer
     {
         $this->enableTravis($project);
         $this->enableAppveyor($project);
+        $this->enableScrutinizer($project);
     }
 
     protected function enableTravis($project)
@@ -280,7 +280,7 @@ class Customizer
         }
 
         $travis_url = "https://travis-ci.org/$project";
-        $this->addServiceReplacement('#\[Enable Travis CI\]\([^)]*\)#', "[Done]($travis_url)");
+        $this->addServiceReplacement('#\[Enable Travis CI\]\([^)]*\)#', "[DONE]($travis_url)");
     }
 
     protected function enableAppveyor($project)
@@ -302,7 +302,7 @@ class Customizer
             $this->addServiceReplacement('#{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}#', $appveyorStatusBadgeId);
         }
         $appveyor_url = "https://ci.appveyor.com/project/$project";
-        $this->addServiceReplacement('#\[Enable Appveyor CI\]\([^)]*\)#', "[Done]($appveyor_url)");
+        $this->addServiceReplacement('#\[Enable Appveyor CI\]\([^)]*\)#', "[DONE]($appveyor_url)");
     }
 
     protected function appveyorStatusBadgeId($project)
@@ -354,11 +354,19 @@ class Customizer
         $data = ['name' => $project];
         $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
 
+        // Point to the completed scrutinizer configuration
+        $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/";
+        $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[DONE]($scrutinizer_url)");
+    }
+
+    protected function startScrutinizerInspection($project)
+    {
+        if (!$this->scrutinizer_token) {
+            return;
+        }
         $uri = "repositories/g/$project/inspections";
         $data = ['branch' => 'master'];
         $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
-        $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/";
-        $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[Done]($scrutinizer_url)");
     }
 
     function scrutinizerAPI($uri, $token, $data = [], $method = 'GET')
@@ -401,7 +409,7 @@ class Customizer
 
         // Add a pointer to our repository
         $repository_url = $result['html_url'];
-        $this->addServiceReplacement('#\[Create GitHub repository\]\([^)]*\)#', "[Done]($repository_url)");
+        $this->addServiceReplacement('#\[Create GitHub repository\]\([^)]*\)#', "[DONE]($repository_url)");
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements, $template_dir = false)
