@@ -269,7 +269,7 @@ class Customizer
             return;
         }
 
-        $uri = 'api/projects';
+        $uri = 'projects';
         $data = [
             "repositoryProvider" => "gitHub",
             "repositoryName" => "$project",
