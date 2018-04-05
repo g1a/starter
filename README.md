@@ -6,16 +6,21 @@ A starter PHP project with many services and features pre-configured. Simply use
 
 To get started, export your [GitHub personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) and then create a new project.
 ```
-$ export GITHUB_TOKEN='[REDACTED]'
+$ export GITHUB_TOKEN='...'
+$ export APPVEYOR_TOKEN='...'      # Optional
+$ export SCRUTINIZER_TOKEN='...'   # Optional
 $ composer create-project g-1-a/starter my-new-project
 ```
 The new project will be owned by the currently-authenticated user. If you would like to create a new project in an organization instead, then set the `GITHUB_ORG` environment variable.
 ```
 $ export GITHUB_ORG='my-github-username-or-org'
 ```
-Optionally (and recommended), you may also export personal access tokens for Appveyor (Windows testing) and Scrutinizer (static analysis tool). If you do this, then these services will be enabled for every project that you create with this starter template.
+
+Once the new project is created, automated scripts will customize it and set up a number of serivces. See the section [Description of Features](#description-of-features) below for more information. Once the scripts have finished running, you may customize your README file and start coding!
 
 ### Access Token Generation
+
+Generating and exporting a personal access token for the services below is recommended, as doing this will allow the post-create-project scripts to configure and enable these services automatically.
 
 | Export                         | Token Generation URL       
 | ------------------------------ | -------------------------- 
@@ -25,7 +30,9 @@ Optionally (and recommended), you may also export personal access tokens for App
 
 ### Manual Service Configuration
 
-If the personal access token for these services is not set up, then the service may be manually configured later. In addition, this project is also configured for use with Packagist, Dependencies.io and Coveralls; these services only need to be authorized through their web interface to enable them for projects created with this template.
+If the personal access token for these services is not set up, then the service may be manually configured later. In addition, this project is also configured for use with Packagist, Dependencies.io and Coveralls; these services only need to be manually authorized through their web interface to enable them for projects created with this template.
+
+Follow the links in the table below to configure the services you would like to use.
 
 | Feature                   | Manual Setup URL
 | ------------------------- | ----------------
@@ -78,4 +85,10 @@ The following things are provided:
   - **Dependencies:** A [dependencies.yml](/dependencies.yml) is provided; project must be enabled on [dependencies.io](https://www.dependencies.io/)
   - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default.
 
-After the `composer create-project` completes running, your new project will exist on GitHub, and the first test (with placeholder code) should already be queued to run on Travis (and Appveyor and Scrutinizer, if enabled). Run through the list above, customize as needed, enable services that were not automatically configured, and start writing your own code.
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for submitting pull requests to us.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
