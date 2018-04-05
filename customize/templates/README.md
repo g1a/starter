@@ -8,6 +8,22 @@ Put a one-line description of your project here.
 [![Coverage Status](https://coveralls.io/repos/github/example-org/example-project/badge.svg?branch=master)](https://coveralls.io/github/example-org/example-project?branch=master) 
 [![License](https://poser.pugx.org/example-org/example-project/license)](https://github.com/example-org/example-project//master/LICENSE)
 
+## FINISH CUSTOMIZATION
+
+Enable those services shown below that have not already been configured:
+
+| Feature                   | Setup
+| ------------------------- | ----------------
+| Collaborative repository  | [Create GitHub repository](https://github.com/new)
+| Linux permutation testing | [Enable Travis CI](https://travis-ci.org/profile)
+| Windows testing           | [Enable Appveyor CI](https://ci.appveyor.com/projects/new)
+| Static analysis           | [Enable Scrutinizer CI](https://scrutinizer-ci.com/g/new)
+| Code coverage             | [Enable Coveralls](https://coveralls.io/repos/new)
+| Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
+| Dependency updates        | [Enable Dependencies.io](https://app.dependencies.io/add-project)
+
+Then, delete this section and finish customizing this README.
+
 ## Getting Started
 
 Explain how to get a copy of this project up and running on a new user's local machine.

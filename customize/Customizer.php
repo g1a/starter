@@ -65,20 +65,10 @@ class Customizer
 
     public function run()
     {
-        // Providing a GITHUB_TOKEN is required to allow us to
-        // create any services
+        // See the README for instructions on creating access tokens
         $this->github_token = getenv('GITHUB_TOKEN');
-
-        // Providing TRAVIS_TOKEN is not required; GITHUB_TOKEN will
-        // be used if a Travis-specific token is not available.
         $this->travis_token = getenv('TRAVIS_TOKEN');
-
-        // Create an access token for Scrutinizer at:
-        // https://scrutinizer-ci.com/profile/applications
         $this->scrutinizer_token = getenv('SCRUTINIZER_TOKEN');
-
-        // Create an access token for Appveyor at:
-        // https://ci.appveyor.com/api-token
         $this->appveyor_token = getenv('APPVEYOR_TOKEN');
 
         // TODO: Notify and quit if github_token is not provided, or fails to authenticate.
@@ -288,6 +278,9 @@ class Customizer
             passthru('travis sync  --no-interactive');
             passthru("travis enable --no-interactive", $status);
         }
+
+        $travis_url = "https://travis-ci.org/$project";
+        $this->addServiceReplacement('#\[Enable Travis CI\]\([^)]*\)#', "[Done]($travis_url)");
     }
 
     protected function enableAppveyor($project)
@@ -308,6 +301,8 @@ class Customizer
         if ($appveyorStatusBadgeId) {
             $this->addServiceReplacement('#{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}#', $appveyorStatusBadgeId);
         }
+        $appveyor_url = "https://ci.appveyor.com/project/$project";
+        $this->addServiceReplacement('#\[Enable Appveyor CI\]\([^)]*\)#', "[Done]($appveyor_url)");
     }
 
     protected function appveyorStatusBadgeId($project)
@@ -362,6 +357,8 @@ class Customizer
         $uri = "repositories/g/$project/inspections";
         $data = ['branch' => 'master'];
         $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
+        $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/"
+        $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[Done]($scrutinizer_url)");
     }
 
     function scrutinizerAPI($uri, $token, $data = [], $method = 'GET')
@@ -401,6 +398,10 @@ class Customizer
         // Set the remote to point to the repository we just created
         $remote = $result['ssh_url'];
         $this->passthru("git -C '$path' remote add origin '{$remote}'");
+
+        // Add a pointer to our repository
+        $repository_url = $result['html_url'];
+        $this->addServiceReplacement('#\[Create GitHub repository\]\([^)]*\)#', "[Done]($repository_url)");
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements, $template_dir = false)
