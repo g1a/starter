@@ -13,6 +13,8 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 class Customizer
 {
+    protected $serviceReplacements = [];
+
     /**
      * It is necessary to explicitly include certain Guzzle files when
      * running code via a Composer script.
@@ -63,6 +65,8 @@ class Customizer
 
     public function run()
     {
+        // Providing a GITHUB_TOKEN is required to allow us to
+        // create any services
         $this->github_token = getenv('GITHUB_TOKEN');
 
         // Providing TRAVIS_TOKEN is not required; GITHUB_TOKEN will
@@ -146,8 +150,8 @@ class Customizer
             '/{{TEMPLATE_PROJECT}}/' => $this->project_name,
             '/{{TEMPLATE_ORG}}/' => $this->project_org,
         ];
-        $replacements = array_filter($replacements);
-        $this->replaceContentsOfAllTemplateFiles($replacements);
+        $template_dir = $this->working_dir . '/customize/templates';
+        $this->replaceContentsOfAllTemplateFiles($replacements, $template_dir);
 
         // Additional cleanup:
         //    1. Remove 'customize' directory
@@ -169,7 +173,7 @@ class Customizer
         $this->createRepository();
 
         // Push initial commit with unmodified template
-        $this->passthru("git push -u origin master");
+        $this->push();
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
@@ -177,13 +181,16 @@ class Customizer
         //    3. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
+        // Replace contents of template files again with service replacements
+        $this->replaceContentsOfAllTemplateFiles($this->serviceReplacements);
+
         // Commit modifications to template project.
         // TODO: Make a more robust commit message.
         $this->passthru('git add .');
         $this->passthru('git commit -m "Modifications to template project from customization process."');
 
-        // Push repository to fire off a build
-        $this->passthru("git push -u origin master");
+        // Push updated changes to fire off a build
+        $this->push();
 
         // Code analysis:
         //    1. Enable testing via Scrutinizer
@@ -192,6 +199,27 @@ class Customizer
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
         //    2. Register with dependencies.io (TODO API not available)
+    }
+
+    protected function injectGitHubToken($remote = 'origin')
+    {
+        // If the remote was passed as an identifier, convert it to a URL
+        if (preg_match('#[a-zA-Z_-]*', $remote)) {
+            $remote = exec("git config --get remote.$remote.url");
+        }
+        // If the remote was provided as 'git@github.com:org/project.git',
+        // then convert it to 'https://github.com/org/project.git'
+        $remote = str_replace('git@github.com:', 'https://github.com/', $remote);
+        // If the remote goes not have a github token, then inject one.
+        $remote = str_replace('https://github.com/', "https://{$this->github_token}:x-oauth-basic@github.com/", $remote);
+
+        return $remote;
+    }
+
+    protected function push($remote = 'origin', $branch = 'master')
+    {
+        $remote = $this->injectGitHubToken($remote);
+        $this->passthru("git push -u '$remote' $branch");
     }
 
     protected function readComposerJson($composer_path)
@@ -221,6 +249,11 @@ class Customizer
         $fs->remove($this->working_dir . '/customize');
     }
 
+    protected function addServiceReplacement($key, $value)
+    {
+        $this->serviceReplacements[$key] = $value;
+    }
+
     protected function createRepository()
     {
         // TODO: ensure that 'hub' is installed and print an error message if it isn't.
@@ -230,7 +263,7 @@ class Customizer
     protected function enableTesting()
     {
         $this->enableTravis();
-        $this->enableAppveyor($this->project_name_and_org, $this->authenticatedUsername());
+        $this->enableAppveyor($this->project_name_and_org);
     }
 
     protected function enableTravis()
@@ -261,7 +294,7 @@ class Customizer
         }
     }
 
-    protected function enableAppveyor($project, $username)
+    protected function enableAppveyor($project)
     {
         if (!$this->appveyor_token) {
             print "No APPVEYOR_TOKEN environment variable provided; skipping Appveyor setup.\n";
@@ -274,6 +307,25 @@ class Customizer
             "repositoryName" => "$project",
         ];
         $this->appveyorAPI($uri, $this->appveyor_token, $data);
+
+        $appveyorStatusBadgeId = $this->appveyorStatusBadgeId($project);
+        if ($appveyorStatusBadgeId) {
+            $this->addServiceReplacement('{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}', $appveyorStatusBadgeId);
+        }
+    }
+
+    protected function appveyorStatusBadgeId($project)
+    {
+        if (!$this->appveyor_token) {
+            return false;
+        }
+        $projectSlug = $this->project_name;
+        $uri = "projects/$project/settings";
+        $appveyorInfo = $this->appveyorAPI($uri, $this->appveyor_token);
+        if (!isset($appveyorInfo['settings']['statusBadgeId'])) {
+            return false;
+        }
+        return $appveyorInfo['settings']['statusBadgeId'];
     }
 
     function appveyorAPI($uri, $token, $data = [], $method = 'GET')
@@ -339,9 +391,12 @@ class Customizer
         return $resultData;
     }
 
-    protected function replaceContentsOfAllTemplateFiles($replacements)
+    protected function replaceContentsOfAllTemplateFiles($replacements, $template_dir = false)
     {
-        $template_dir = $this->working_dir . '/customize/templates';
+        $replacements = array_filter($replacements);
+        if (empty($replacements)) {
+            return;
+        }
         $files = Finder::create()
             ->files()
             ->exclude('customize')
@@ -354,8 +409,13 @@ class Customizer
 
     protected function replaceContentsOfFile($replacements, $file, $template_dir)
     {
-        $template_file = $template_dir . '/' . $file->getRelativePathname();
-        $source_file = file_exists($template_file) ? $template_file : $file->getRealPath();
+        $source_file = $file->getRealPath();
+        if ($template_dir) {
+            $template_file = $template_dir . '/' . $file->getRelativePathname();
+            if (file_exists($template_file)) {
+                $source_file = $template_file;
+            }
+        }
         if (empty($source_file)) {
             return;
         }

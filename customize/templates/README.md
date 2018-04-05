@@ -3,7 +3,7 @@
 Put a one-line description of your project here.
 
 [![Travis CI](https://travis-ci.org/example-org/example-project.svg?branch=master)](https://travis-ci.org/example-org/example-project)
-[![Windows CI](https://ci.appveyor.com/api/projects/status/REPLACE_THIS?svg=true)](https://ci.appveyor.com/project/example-org/example-project)
+[![Windows CI](https://ci.appveyor.com/api/projects/status/{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}?svg=true)](https://ci.appveyor.com/project/example-org/example-project)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/example-org/example-project/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/example-org/example-project/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/example-org/example-project/badge.svg?branch=master)](https://coveralls.io/github/example-org/example-project?branch=master) 
 [![License](https://poser.pugx.org/example-org/example-project/license)](https://github.com/example-org/example-project//master/LICENSE)
