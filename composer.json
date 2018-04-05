@@ -53,7 +53,8 @@
             "@customize"
         ],
         "post-update-cmd": [
-            "create-scenario phpunit5 'phpunit/phpunit:^5.7.27' --platform-php '5.6'"
+            "create-scenario phpunit5 'phpunit/phpunit:^5.7.27' --platform-php '5.6'",
+            "dependency-licenses"
         ]
     },
     "config": {

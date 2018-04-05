@@ -230,7 +230,7 @@ class Customizer
 
         // Remove unused scripts.
         unset($composer_data['scripts']['customize']);
-        unset($composer_data['scripts']['post-install-cmd']);
+        unset($composer_data['scripts']['post-create-project-cmd']);
 
         file_put_contents($composer_path, json_encode($composer_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
