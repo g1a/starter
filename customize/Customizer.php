@@ -66,9 +66,13 @@ class Customizer
         // be used if a Travis-specific token is not available.
         $this->travis_token = getenv('TRAVIS_TOKEN');
 
-        // create an access token for Scrutinizer at:
+        // Create an access token for Scrutinizer at:
         // https://scrutinizer-ci.com/profile/applications
         $this->scrutinizer_token = getenv('SCRUTINIZER_TOKEN');
+
+        // Create an access token for Appveyor at:
+        // https://ci.appveyor.com/api-token
+        $this->appveyor_token = getenv('APPVEYOR_TOKEN');
 
         // TODO: Notify and quit if github_token is not provided, or fails to authenticate.
         $this->createGitHubClient($this->github_token);
@@ -164,7 +168,7 @@ class Customizer
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
-        //    2. Enable testing on AppVeyor (TODO)
+        //    2. Enable testing on AppVeyor
         //    3. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
@@ -227,6 +231,7 @@ class Customizer
     protected function enableTesting()
     {
         $this->enableTravis();
+        $this->enableAppveyor($this->project_name_and_org);
     }
 
     protected function enableTravis()
@@ -257,6 +262,45 @@ class Customizer
         }
     }
 
+    protected function enableAppveyor($project)
+    {
+        if (!$this->appveyor_token) {
+            print "No APPVEYOR_TOKEN environment variable provided; skipping Appveyor setup.\n";
+            return;
+        }
+
+        $uri = 'api/projects';
+        $data = [
+            "repositoryProvider" => "gitHub",
+            "repositoryName" => "$project",
+        ];
+        $this->appveyorAPI($uri, $this->scrutinizer_token, $data);
+    }
+
+    function appveyorAPI($uri, $token, $data = [], $method = 'GET')
+    {
+        $url = "https://ci.appveyor.com/api/$uri";
+        $headers = [
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'my-org/my-app',
+            'Authorization' => "Bearer " . $token,
+        ];
+        $guzzleParams = [ 'headers' => $headers, ];
+        if (!empty($data)) {
+            $method = 'POST';
+            $guzzleParams['json'] = $data;
+        }
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request($method, $url, $guzzleParams);
+        $resultData = json_decode($res->getBody(), true);
+        $httpCode = $res->getStatusCode();
+        if ($httpCode >= 300) {
+            throw new \Exception("Appveyor API call $uri failed with $httpCode");
+        }
+
+        return $resultData;
+    }
+
     protected function enableScrutinizer($project)
     {
         if (!$this->scrutinizer_token) {
@@ -266,6 +310,10 @@ class Customizer
 
         $uri = 'repositories/g';
         $data = ['name' => $project];
+        $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
+
+        $uri = "repositories/g/$project/inspections";
+        $data = ['branch' => 'master'];
         $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
     }
 
