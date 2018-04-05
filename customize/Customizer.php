@@ -274,7 +274,7 @@ class Customizer
             "repositoryProvider" => "gitHub",
             "repositoryName" => "$project",
         ];
-        $this->appveyorAPI($uri, $this->scrutinizer_token, $data);
+        $this->appveyorAPI($uri, $this->appveyor_token, $data);
     }
 
     function appveyorAPI($uri, $token, $data = [], $method = 'GET')
