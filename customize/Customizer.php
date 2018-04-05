@@ -166,7 +166,7 @@ class Customizer
         //    1. Enable testing on Travis via `travis enable`
         //    2. Enable testing on AppVeyor
         //    3. Enable coveralls (TODO API not available)
-        $this->enableTesting();
+        $this->enableTesting($this->project_name_and_org);
 
         // Replace contents of template files again with service replacements
         $this->replaceContentsOfAllTemplateFiles($this->serviceReplacements);
@@ -246,13 +246,13 @@ class Customizer
         $this->serviceReplacements[$keyRegex] = $value;
     }
 
-    protected function enableTesting()
+    protected function enableTesting($project)
     {
-        $this->enableTravis();
-        $this->enableAppveyor($this->project_name_and_org);
+        $this->enableTravis($project);
+        $this->enableAppveyor($project);
     }
 
-    protected function enableTravis()
+    protected function enableTravis($project)
     {
         // If there is no travis token, log in with the github token
         if (empty($this->travis_token)) {
