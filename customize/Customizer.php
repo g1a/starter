@@ -101,7 +101,7 @@ class Customizer
             $this->passthru('git init');
             $this->passthru('git add .');
             $this->passthru('git rm -r --cached customize');
-            $this->passthru('git commit -m "Initial commit of unmodified template project."');
+            $this->passthru('git commit -m "Initial commit of unmodified template project [ci skip]."');
         }
         else {
             // If we are re-using an existing repo, make sure that the
@@ -112,6 +112,9 @@ class Customizer
             // Remove the 'composer' remote if it exists.
             @passthru("git remote remove composer 2>/dev/null");
         }
+
+        // Push initial commit with unmodified template
+        $this->passthru("git push -u origin master");
 
         // Composer customizations:
         //    1. Change project name
@@ -170,7 +173,7 @@ class Customizer
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
-        //    2. Enable testing on AppVeyor (TODO for now we are doing this later)
+        //    2. Enable testing on AppVeyor
         //    3. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
@@ -185,9 +188,6 @@ class Customizer
         // Code analysis:
         //    1. Enable testing via Scrutinizer
         $this->enableScrutinizer($this->project_name_and_org);
-
-        // TODO: Move this earlier
-        $this->enableAppveyor($this->project_name_and_org, $this->authenticatedUsername());
 
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
@@ -230,6 +230,7 @@ class Customizer
     protected function enableTesting()
     {
         $this->enableTravis();
+        $this->enableAppveyor($this->project_name_and_org, $this->authenticatedUsername());
     }
 
     protected function enableTravis()
