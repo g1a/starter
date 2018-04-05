@@ -113,9 +113,6 @@ class Customizer
             @passthru("git remote remove composer");
         }
 
-        // Copy contents of templates directory over the working directory
-        $this->placeTemplates();
-
         // Composer customizations:
         //    1. Change project name
         //    2. Remove "CustomizeProject\\" from psr-4 autoloader
@@ -216,12 +213,6 @@ class Customizer
         unset($composer_data['scripts']['post-install-cmd']);
 
         file_put_contents($composer_path, json_encode($composer_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    }
-
-    protected function placeTemplates()
-    {
-        $fs = new Filesystem();
-        $fs->mirror($this->working_dir . '/customize/templates', $this->working_dir);
     }
 
     protected function cleanupCustomization()
@@ -357,25 +348,28 @@ class Customizer
 
     protected function replaceContentsOfAllTemplateFiles($replacements)
     {
+        $template_dir = $this->working_dir . '/customize/templates';
         $files = Finder::create()
             ->files()
             ->exclude('customize')
             ->exclude('vendor')
             ->in(dirname(__DIR__));
         foreach ($files as $file) {
-            $this->replaceContentsOfFile($replacements, $file);
+            $this->replaceContentsOfFile($replacements, $file, $template_dir);
         }
     }
 
-    protected function replaceContentsOfFile($replacements, $file)
+    protected function replaceContentsOfFile($replacements, $file, $template_dir)
     {
-        if (empty($file->getRealPath())) {
+        $template_file = $template_dir . '/' . $file->getRelativePathname();
+        $source_file = file_exists($template_file) ? $template_file : $file->getRealPath();
+        if (empty($source_file)) {
             return;
         }
-        print "Replace " . $file->getRelativePathname() . "\n";
-        $contents = file_get_contents($file->getRealPath());
+        $contents = file_get_contents($source_file);
         $altered = preg_replace(array_keys($replacements), array_values($replacements), $contents);
         if ($altered != $contents) {
+            print "Edit " . $file->getRelativePathname() . "\n";
             file_put_contents($file->getRealPath(), $altered);
         }
     }
