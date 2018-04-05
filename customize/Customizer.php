@@ -113,9 +113,6 @@ class Customizer
             @passthru("git remote remove composer 2>/dev/null");
         }
 
-        // Push initial commit with unmodified template
-        $this->passthru("git push -u origin master");
-
         // Composer customizations:
         //    1. Change project name
         //    2. Remove "CustomizeProject\\" from psr-4 autoloader
@@ -171,16 +168,19 @@ class Customizer
         //    3. Push code to GitHub
         $this->createRepository();
 
+        // Push initial commit with unmodified template
+        $this->passthru("git push -u origin master");
+
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
         //    2. Enable testing on AppVeyor
         //    3. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
-        // Make initial commit.
-        // TODO: Make a more robust commit message including everthing that was done.
+        // Commit modifications to template project.
+        // TODO: Make a more robust commit message.
         $this->passthru('git add .');
-        $this->passthru('git commit -m "Template project customizations."');
+        $this->passthru('git commit -m "Modifications to template project from customization process."');
 
         // Push repository to fire off a build
         $this->passthru("git push -u origin master");
