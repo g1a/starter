@@ -100,7 +100,7 @@ class Customizer
         if (!is_dir('.git')) {
             $this->passthru('git init');
             $this->passthru('git add .');
-            $this->passthru('git reset HEAD customize');
+            $this->passthru('git rm -r --cached customize');
             $this->passthru('git commit -m "Initial commit of unmodified template project."');
         }
         else {
@@ -110,7 +110,7 @@ class Customizer
             @passthru("git remote set-url origin git@github.com:{$this->project_name_and_org}.git");
             @passthru("git remote set-url origin --push git@github.com:{$this->project_name_and_org}.git");
             // Remove the 'composer' remote if it exists.
-            @passthru("git remote remove composer");
+            @passthru("git remote remove composer 2>/dev/null");
         }
 
         // Composer customizations:
