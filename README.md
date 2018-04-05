@@ -42,8 +42,8 @@ The following things are provided:
     - [Example.php](/src/Example.php): A simple class that multiplies. Replace with your own code.
     - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider. Replace with your own tests.
   - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically.
-  - **Appveyor:** An appveyor configuration file is provided, but project must be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
-  - **Scrutinizer:** Project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
+  - **Appveyor:** An appveyor configuration file is provided. If an APPVEYOR_TOKEN environment variable is defined when the project is created, Appveyor testing will be automatically configured. Otherwise, it will need to be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
+  - **Scrutinizer:** If a SCRUTINIZER_TOKEN environment variable is defined when the project is created, then Scrutinizer static code analysis is automatically enabled. Otherwise, the project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
   - Provides handy composer scripts:
     - `composer test`: Run all tests.
     - `composer unit`: Run just the phpunit tests.
@@ -55,4 +55,4 @@ The following things are provided:
   - **Dependencies:** A [dependencies.yml](/dependencies.yml) is provided; project must be enabled on [dependencies.io](https://www.dependencies.io/)
   - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default.
 
-After the `composer create-project` completes running, your new project will exist on GitHub, and the first test (with placeholder code) should already be queued to run on Travis. Run through the list above, customize as needed, enable services that were not automatically configured, and start writing your own code.
+After the `composer create-project` completes running, your new project will exist on GitHub, and the first test (with placeholder code) should already be queued to run on Travis (and Appveyor and Scrutinizer, if enabled). Run through the list above, customize as needed, enable services that were not automatically configured, and start writing your own code.
