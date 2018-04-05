@@ -164,9 +164,8 @@ class Customizer
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
-        //    2. Enable Scrutinizer via web API
-        //    3. Enable testing on AppVeyor (TODO)
-        //    4. Enable coveralls (TODO API not available)
+        //    2. Enable testing on AppVeyor (TODO)
+        //    3. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
         // Make initial commit.
@@ -176,6 +175,10 @@ class Customizer
 
         // Push repository to fire off a build
         $this->passthru("git push -u origin master");
+
+        // Code analysis:
+        //    1. Enable testing via Scrutinizer
+        $this->enableScrutinizer($this->project_name_and_org);
 
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
@@ -224,7 +227,6 @@ class Customizer
     protected function enableTesting()
     {
         $this->enableTravis();
-        $this->enableScrutinizer($this->project_name_and_org);
     }
 
     protected function enableTravis()
