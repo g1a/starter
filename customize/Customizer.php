@@ -166,11 +166,8 @@ class Customizer
         $this->passthru('composer -n dumpautoload');
         $this->passthru('composer -n test');
 
-        // Repository creation:
-        //    1. Add a commit that explains all of the changes made to project.
-        //    2. Create a GitHub repository via `hub create`
-        //    3. Push code to GitHub
-        $this->createRepository();
+        // Create a GitHub repository via GitHub API
+        $this->createGitHubRepository($this->working_dir, $this->project_name, getenv('GITHUB_ORG'));
 
         // Push initial commit with unmodified template
         $this->push();
@@ -201,11 +198,16 @@ class Customizer
         //    2. Register with dependencies.io (TODO API not available)
     }
 
+    protected function gitRemote($remote = 'origin')
+    {
+        return exec("git config --get remote.$remote.url");
+    }
+
     protected function injectGitHubToken($remote = 'origin')
     {
         // If the remote was passed as an identifier, convert it to a URL
         if (preg_match('#[a-zA-Z_-]*#', $remote)) {
-            $remote = exec("git config --get remote.$remote.url");
+            $remote = $this->gitRemote($remote);
         }
         // If the remote was provided as 'git@github.com:org/project.git',
         // then convert it to 'https://github.com/org/project.git'
@@ -249,15 +251,9 @@ class Customizer
         $fs->remove($this->working_dir . '/customize');
     }
 
-    protected function addServiceReplacement($key, $value)
+    protected function addServiceReplacement($keyRegex, $value)
     {
-        $this->serviceReplacements[$key] = $value;
-    }
-
-    protected function createRepository()
-    {
-        // TODO: ensure that 'hub' is installed and print an error message if it isn't.
-        passthru("hub create " . $this->project_name_and_org);
+        $this->serviceReplacements[$keyRegex] = $value;
     }
 
     protected function enableTesting()
@@ -310,7 +306,7 @@ class Customizer
 
         $appveyorStatusBadgeId = $this->appveyorStatusBadgeId($project);
         if ($appveyorStatusBadgeId) {
-            $this->addServiceReplacement('{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}', $appveyorStatusBadgeId);
+            $this->addServiceReplacement('#{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}#', $appveyorStatusBadgeId);
         }
     }
 
@@ -389,6 +385,22 @@ class Customizer
         }
 
         return $resultData;
+    }
+
+    protected function createGitHubRepository($path, $target, $github_org = '')
+    {
+        // Delete the existing origin if it has been set
+        @passthru("git -C '$path' remote remove origin 2>/dev/null");
+
+        // Use GitHub API to create a new repository
+        $description = '';
+        $homepage = '';
+        $public = true;
+        $result = $this->gitHubAPI->api('repo')->create($target, $description, $homepage, $public, empty($github_org) ? null : $github_org);
+
+        // Set the remote to point to the repository we just created
+        $remote = $result['ssh_url'];
+        $this->passthru("git -C '$path' remote add origin '{$remote}'");
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements, $template_dir = false)
