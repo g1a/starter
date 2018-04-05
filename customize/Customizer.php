@@ -274,14 +274,6 @@ class Customizer
             "repositoryName" => "$project",
         ];
         $this->appveyorAPI($uri, $this->appveyor_token, $data);
-
-        $uri = 'builds';
-        $data = [
-            "accountName" => $username,
-            "projectSlug" => $project,
-            "branch" => "master",
-        ];
-        $this->appveyorAPI($uri, $this->appveyor_token, $data);
     }
 
     function appveyorAPI($uri, $token, $data = [], $method = 'GET')
