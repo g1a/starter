@@ -49,7 +49,7 @@
             "@cs"
         ],
         "scenario": "scenarios/install",
-        "xxx-post-install-cmd": [
+        "post-create-project-cmd": [
             "@customize"
         ],
         "post-update-cmd": [

@@ -1,6 +1,6 @@
 # Starter
 
-A starter PHP project with many services and features pre-configured. Simply clone and then customize to suit.
+A starter PHP project with many services and features pre-configured. Simply use `composer create-project`, and a new GitHub repository will be created and configured to be tested on Travis CI.
 
 ## Usage
 
@@ -39,8 +39,8 @@ The following things are provided:
 - Testing
   - **Travis:** Automatically enables testing for the new project in Travis.
     - [phpunit.xml.dist](/phpunit.xml.dist): Test configuration with code coverage (html coverage report configuration is present, but commented out).
-    - [Example.php](/src/Example.php): A simple class that multiplies.
-    - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider.
+    - [Example.php](/src/Example.php): A simple class that multiplies. Replace with your own code.
+    - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider. Replace with your own tests.
   - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically.
   - **Appveyor:** An appveyor configuration file is provided, but project must be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
   - **Scrutinizer:** Project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).

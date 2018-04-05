@@ -61,7 +61,14 @@ class Customizer
     public function run()
     {
         $this->github_token = getenv('GITHUB_TOKEN');
+
+        // Providing TRAVIS_TOKEN is not required; GITHUB_TOKEN will
+        // be used if a Travis-specific token is not available.
         $this->travis_token = getenv('TRAVIS_TOKEN');
+
+        // create an access token for Scrutinizer at:
+        // https://scrutinizer-ci.com/profile/applications
+        $this->scrutinizer_token = getenv('SCRUTINIZER_TOKEN');
 
         // TODO: Notify and quit if github_token is not provided, or fails to authenticate.
         $this->createGitHubClient($this->github_token);
@@ -157,9 +164,9 @@ class Customizer
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
-        //    2. Enable testing on AppVeyor (tbd)
-        //    3. Enable coveralls (tbd)
-        //    4. Enable scrutinizer (tbd)
+        //    2. Enable Scrutinizer via web API
+        //    3. Enable testing on AppVeyor (TODO)
+        //    4. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
         // Make initial commit.
@@ -171,8 +178,8 @@ class Customizer
         $this->passthru("git push -u origin master");
 
         // Composer:
-        //    1. Register with packagist?  (tbd cli not provided)
-        //    2. Register with dependencies.io (tbd)
+        //    1. Register with packagist?  (TODO API not available)
+        //    2. Register with dependencies.io (TODO API not available)
     }
 
     protected function readComposerJson($composer_path)
@@ -205,7 +212,7 @@ class Customizer
     protected function cleanupCustomization()
     {
         $fs = new Filesystem();
-        // $fs->remove($this->working_dir . '/customize');
+        $fs->remove($this->working_dir . '/customize');
     }
 
     protected function createRepository()
@@ -215,6 +222,12 @@ class Customizer
     }
 
     protected function enableTesting()
+    {
+        $this->enableTravis();
+        $this->enableScrutinizer($this->project_name_and_org);
+    }
+
+    protected function enableTravis()
     {
         // If there is no travis token, log in with the github token
         if (empty($this->travis_token)) {
@@ -240,6 +253,41 @@ class Customizer
             passthru('travis sync  --no-interactive');
             passthru("travis enable --no-interactive", $status);
         }
+    }
+
+    protected function enableScrutinizer($project)
+    {
+        if (!$this->scrutinizer_token) {
+            print "No SCRUTINIZER_TOKEN environment variable provided; skipping Scrutinizer setup.\n";
+            return;
+        }
+
+        $uri = 'repositories/g';
+        $data = ['name' => $project];
+        $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
+    }
+
+    function scrutinizerAPI($uri, $token, $data = [], $method = 'GET')
+    {
+        $url = "https://scrutinizer-ci.com/api/$uri?access_token=$token";
+        $headers = [
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'my-org/my-app',
+        ];
+        $guzzleParams = [ 'headers' => $headers, ];
+        if (!empty($data)) {
+            $method = 'POST';
+            $guzzleParams['json'] = $data;
+        }
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request($method, $url, $guzzleParams);
+        $resultData = json_decode($res->getBody(), true);
+        $httpCode = $res->getStatusCode();
+        if ($httpCode >= 300) {
+            throw new \Exception("Scrutinizer API call $uri failed with $httpCode");
+        }
+
+        return $resultData;
     }
 
     protected function replaceContentsOfAllTemplateFiles($replacements)
