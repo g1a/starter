@@ -54,8 +54,11 @@ class Customizer
      */
     public function authenticatedUsername()
     {
-        $authenticated = $this->gitHubAPI->api('current_user')->show();
-        return $authenticated['login'];
+        if (!isset($this->authenticated_username)) {
+            $authenticated = $this->gitHubAPI->api('current_user')->show();
+            $this->authenticated_username = $authenticated['login'];
+        }
+        return $this->authenticated_username;
     }
 
     public function run()
@@ -170,7 +173,7 @@ class Customizer
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
-        //    2. Enable testing on AppVeyor
+        //    2. Enable testing on AppVeyor (TODO for now we are doing this later)
         //    3. Enable coveralls (TODO API not available)
         $this->enableTesting();
 
@@ -187,7 +190,7 @@ class Customizer
         $this->enableScrutinizer($this->project_name_and_org);
 
         // TODO: Move this earlier
-        $this->enableAppveyor($this->project_name_and_org);
+        $this->enableAppveyor($this->project_name_and_org, $this->authenticatedUsername());
 
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
@@ -266,7 +269,7 @@ class Customizer
         }
     }
 
-    protected function enableAppveyor($project)
+    protected function enableAppveyor($project, $username)
     {
         if (!$this->appveyor_token) {
             print "No APPVEYOR_TOKEN environment variable provided; skipping Appveyor setup.\n";
@@ -277,6 +280,14 @@ class Customizer
         $data = [
             "repositoryProvider" => "gitHub",
             "repositoryName" => "$project",
+        ];
+        $this->appveyorAPI($uri, $this->appveyor_token, $data);
+
+        $uri = 'builds';
+        $data = [
+            "accountName" => $username,
+            "projectSlug" => $project,
+            "branch" => "master",
         ];
         $this->appveyorAPI($uri, $this->appveyor_token, $data);
     }
