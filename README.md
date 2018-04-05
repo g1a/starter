@@ -71,7 +71,7 @@ The following things are provided:
     - [phpunit.xml.dist](/phpunit.xml.dist): Test configuration with code coverage (html coverage report configuration is present, but commented out).
     - [Example.php](/src/Example.php): A simple class that multiplies. Replace with your own code.
     - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider. Replace with your own tests.
-  - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically.
+  - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically; all that needs to be done is to enable the Coveralls service for the new project.
   - **Appveyor:** An appveyor configuration file is provided. If an APPVEYOR_TOKEN environment variable is defined when the project is created, Appveyor testing will be automatically configured. Otherwise, it will need to be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
   - **Scrutinizer:** If a SCRUTINIZER_TOKEN environment variable is defined when the project is created, then Scrutinizer static code analysis is automatically enabled. Otherwise, the project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
   - Provides handy composer scripts:
@@ -81,9 +81,9 @@ The following things are provided:
     - `composer cs`: Run the code sniffer to check for PSR-2 compliance.
     - `composer cbf`: Fix code style violations where possible.
 - Composer
-  - **Packagist:** Project must be manually submitted to [packagist.org](https://packagist.org)
-  - **Dependencies:** A [dependencies.yml](/dependencies.yml) is provided; project must be enabled on [dependencies.io](https://www.dependencies.io/)
-  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default.
+  - **Packagist:** Project must be manually submitted to [packagist.org](https://packagist.org) in order to be able to `require` it as a dependency of some other project.
+  - **Dependencies:** A [dependencies.yml](/dependencies.yml) configuration file is provided; if the project is enabled on [dependencies.io](https://www.dependencies.io/), then pull requests will automatically be created any time newer versions of the project's dependencies become available.
+  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default. This project also contains the scripts used to keep the LICENSES file up-to-date.
 
 ## Contributing
 

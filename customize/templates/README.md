@@ -6,11 +6,14 @@ Put a one-line description of your project here.
 [![Windows CI](https://ci.appveyor.com/api/projects/status/{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}?svg=true)](https://ci.appveyor.com/project/example-org/example-project)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/example-org/example-project/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/example-org/example-project/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/example-org/example-project/badge.svg?branch=master)](https://coveralls.io/github/example-org/example-project?branch=master) 
-
-<!-- License using shields.io: can contain any text you want, but must be manually updated -->
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
-<!-- License using poser.pugx.org: shows the license that Packagist.org read from your composer.json file.
+<!-- 
+There are two choices for LICENSE badges:
+
+1. License using shields.io (above): Can contain any text you want, and has no prerequisites, but must be manually updated if you change the license.
+2. License using poser.pugx.org (below): shows the license that Packagist.org read from your composer.json file. Must register with Packagist to use Poser.
+
 [![License](https://poser.pugx.org/example-org/example-project/license)](https://github.com/example-org/example-project//master/LICENSE)
 -->
 
