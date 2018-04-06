@@ -18,12 +18,6 @@ class ExampleCommandsTest extends TestCase
 
     const STATUS_OK = 0;
     const STATUS_ERROR = 1;
-    const NOT_ENOUGH_AGUMENTS_ERROR = <<<EOT
-Not enough arguments (missing: "b").
-
-
-multiply [-h|--help] [-q|--quiet] [-v|vv|vvv|--verbose] [-V|--version] [--ansi] [--no-ansi] [-n|--no-interaction] [--simulate] [--progress-delay PROGRESS-DELAY] [-D|--define DEFINE] [--] <command> <a> <b>
-EOT;
 
     /**
      * Instantiate a new runner
@@ -64,7 +58,7 @@ EOT;
             ],
 
             [
-                self::NOT_ENOUGH_AGUMENTS_ERROR, self::STATUS_ERROR,
+                'Not enough arguments (missing: "b").', self::STATUS_ERROR,
                 'multiply', 7,
             ],
         ];
@@ -84,7 +78,7 @@ EOT;
         list($actualOutput, $statusCode) = $this->execute($argv);
 
         // Confirm that our output and status code match expectations
-        $this->assertContains($this->squashSpaces($expectedOutput), $this->squashSpaces($actualOutput));
+        $this->assertContains($expectedOutput, $actualOutput);
         $this->assertEquals($expectedStatus, $statusCode);
     }
 
@@ -118,20 +112,5 @@ EOT;
         // Return the output and status code.
         $actualOutput = trim($output->fetch());
         return [$actualOutput, $statusCode];
-    }
-
-    /**
-     * Allow for some variation in whitespace (e.g. Windows vs Linux EOL, etc.)
-     */
-    protected function squashSpaces($text)
-    {
-        $text = preg_replace('#[ \t]+#m', ' ', $text);
-        $text = preg_replace('#[ \t]*$#m', '', $text);
-        $text = preg_replace('#^[ \t]*#m', '', $text);
-        $text = preg_replace("#^[ \t\n\r]+$#m", '', $text);
-        $text = preg_replace("#[\n\r]+#m", "\n", $text);
-        $text = preg_replace("#^[ \t\n\r]+$#m", '', $text);
-
-        return $text;
     }
 }
