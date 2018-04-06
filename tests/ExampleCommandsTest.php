@@ -16,6 +16,16 @@ class ExampleCommandsTest extends TestCase
     /** @var string */
     protected $appVersion;
 
+    const STATUS_OK = 0;
+    const STATUS_ERROR = 1;
+    const NOT_ENOUGH_AGUMENTS_ERROR = <<<EOT
+[Symfony\Component\Console\Exception\RuntimeException]
+  Not enough arguments (missing: "b").
+
+
+multiply [-h|--help] [-q|--quiet] [-v|vv|vvv|--verbose] [-V|--version] [--ansi] [--no-ansi] [-n|--no-interaction] [--simulate] [--progress-delay PROGRESS-DELAY] [-D|--define DEFINE] [--] <command> <a> <b>
+EOT;
+
     /**
      * Instantiate a new runner
      */
@@ -38,9 +48,10 @@ class ExampleCommandsTest extends TestCase
     public function exampleTestCommandParameters()
     {
         return [
-            ['2 times 2 is 4', 0, 'multiply', 2, 2,],
-            ['3 times 3 is 9', 0, 'multiply', 3, 3,],
-            ['7 times 8 is 56', 0, 'multiply', 7, 8,],
+            ['2 times 2 is 4', self::STATUS_OK, 'multiply', 2, 2,],
+            ['3 times 3 is 9', self::STATUS_OK, 'multiply', 3, 3,],
+            ['7 times 8 is 56', self::STATUS_OK, 'multiply', 7, 8,],
+            [self::NOT_ENOUGH_AGUMENTS_ERROR, self::STATUS_ERROR, 'multiply', 7, ],
         ];
     }
 
@@ -58,7 +69,7 @@ class ExampleCommandsTest extends TestCase
         list($actualOutput, $statusCode) = $this->execute($argv);
 
         // Confirm that our output and status code match expectations
-        $this->assertEquals($expectedOutput, $actualOutput);
+        $this->assertEquals($this->squashSpaces($expectedOutput), $this->squashSpaces($actualOutput));
         $this->assertEquals($expectedStatus, $statusCode);
     }
 
@@ -92,5 +103,17 @@ class ExampleCommandsTest extends TestCase
         // Return the output and status code.
         $actualOutput = trim($output->fetch());
         return [$actualOutput, $statusCode];
+    }
+
+    /**
+     * Allow for some variation in whitespace (e.g. Windows vs Linux EOL, etc.)
+     */
+    protected function squashSpaces($text)
+    {
+        $text = preg_replace('#[ \t]+#', ' ', $text);
+        $text = preg_replace('#[ \t]*$#', '', $text);
+        $text = preg_replace("#[ \t\n\r]+#", "\n", $text);
+
+        return $text;
     }
 }
