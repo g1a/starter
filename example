@@ -2,8 +2,12 @@
 <?php
 
 /**
- * If we're running from phar load the phar autoload file.
+ * Example commandline front controller
+ *
+ * The commandline tool is useful for providing ad-hoc access to our class implementations
  */
+
+// If we're running from phar load the phar autoload file.
 $pharPath = \Phar::running(true);
 if ($pharPath) {
     require_once "$pharPath/vendor/autoload.php";
@@ -15,15 +19,20 @@ if ($pharPath) {
     }
 }
 
+// Define our Runner, and pass it the command classes we provide.
+$commandClasses = [ \ExampleProject\Cli\ExampleCommands::class ];
+$runner = new \Robo\Runner($commandClasses);
+
+// Add the self-update command to our runner
+$selfUpdateRepository = 'g-1-a/starter';
+$runner->setSelfUpdateRepository($selfUpdateRepository);
+
+// Prepare the variables we need to run the command
+$argv = $_SERVER['argv'];
+$appName = "ExampleProject";
+$appVersion = '0.1.0-alpha.1';
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-$commandClasses = [ \ExampleCli\ExampleCommands::class ];
-$statusCode = \Robo\Robo::run(
-    $_SERVER['argv'],
-    $commandClasses,
-    'ExampleProject',
-    '0.1.0-alpha1',
-    $output,
-    'g-1-a/starter'
-);
+// Execute the command and return the result.
+$statusCode = $runner->execute($argv, $appName, $appVersion, $output);
 exit($statusCode);

@@ -1,12 +1,11 @@
 <?php
 
-namespace ExampleCli;
+namespace ExampleProject\Cli;
 
 class ExampleCommands extends \Robo\Tasks
 {
     /**
      * @command multiply
-     * @return string
      */
     public function multiply($a, $b)
     {

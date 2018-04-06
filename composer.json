@@ -16,7 +16,7 @@
     },
     "autoload-dev":{
         "psr-4":{
-            "ExampleCli\\": "cli",
+            "ExampleProject\\Cli\\": "cli",
             "ExampleProject\\": "tests/src"
         }
     },
