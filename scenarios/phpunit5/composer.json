@@ -16,7 +16,6 @@
     },
     "autoload-dev":{
         "psr-4":{
-            "ExampleCli\\": "cli",
             "ExampleProject\\": "tests/src"
         }
     },
@@ -55,7 +54,7 @@
             "@customize"
         ],
         "post-update-cmd": [
-            "create-scenario phpunit5 'phpunit/phpunit:^5.7.27' --platform-php '5.6'",
+            "create-scenario phpunit5 'phpunit/phpunit:^5.7.27' --platform-php '5.6.33'",
             "dependency-licenses"
         ]
     },
@@ -63,7 +62,7 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-            "php": "5.6"
+            "php": "5.6.33"
         },
         "vendor-dir": "../../vendor"
     },

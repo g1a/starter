@@ -19,8 +19,7 @@ class ExampleCommandsTest extends TestCase
     const STATUS_OK = 0;
     const STATUS_ERROR = 1;
     const NOT_ENOUGH_AGUMENTS_ERROR = <<<EOT
-[Symfony\Component\Console\Exception\RuntimeException]
-  Not enough arguments (missing: "b").
+Not enough arguments (missing: "b").
 
 
 multiply [-h|--help] [-q|--quiet] [-v|vv|vvv|--verbose] [-V|--version] [--ansi] [--no-ansi] [-n|--no-interaction] [--simulate] [--progress-delay PROGRESS-DELAY] [-D|--define DEFINE] [--] <command> <a> <b>
@@ -85,7 +84,7 @@ EOT;
         list($actualOutput, $statusCode) = $this->execute($argv);
 
         // Confirm that our output and status code match expectations
-        $this->assertEquals($this->squashSpaces($expectedOutput), $this->squashSpaces($actualOutput));
+        $this->assertContains($this->squashSpaces($expectedOutput), $this->squashSpaces($actualOutput));
         $this->assertEquals($expectedStatus, $statusCode);
     }
 
@@ -126,9 +125,12 @@ EOT;
      */
     protected function squashSpaces($text)
     {
-        $text = preg_replace('#[ \t]+#', ' ', $text);
-        $text = preg_replace('#[ \t]*$#', '', $text);
-        $text = preg_replace("#[ \t\n\r]+#", "\n", $text);
+        $text = preg_replace('#[ \t]+#m', ' ', $text);
+        $text = preg_replace('#[ \t]*$#m', '', $text);
+        $text = preg_replace('#^[ \t]*#m', '', $text);
+        $text = preg_replace("#^[ \t\n\r]+$#m", '', $text);
+        $text = preg_replace("#[\n\r]+#m", "\n", $text);
+        $text = preg_replace("#^[ \t\n\r]+$#m", '', $text);
 
         return $text;
     }
