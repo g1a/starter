@@ -16,18 +16,20 @@
     },
     "autoload-dev":{
         "psr-4":{
+            "ExampleCli\\": "cli",
             "ExampleProject\\": "tests/src"
         }
     },
     "require": {
         "php": ">=5.5.0",
-        "knplabs/github-api": "^2.7",
-        "php-http/guzzle6-adapter": "^1.1",
         "symfony/finder": "^2.8|^3|^4",
         "symfony/filesystem": "^2.8|^3|^4"
     },
     "require-dev": {
+        "consolidation/Robo": "^1",
         "g-1-a/composer-test-scenarios": "^2",
+        "knplabs/github-api": "^2.7",
+        "php-http/guzzle6-adapter": "^1.1",
         "phpunit/phpunit": "^5.7.27",
         "satooshi/php-coveralls": "^2",
         "squizlabs/php_codesniffer": "^2.8"
@@ -49,11 +51,12 @@
             "@cs"
         ],
         "scenario": "scenarios/install",
-        "xxx-post-install-cmd": [
+        "post-create-project-cmd": [
             "@customize"
         ],
         "post-update-cmd": [
-            "create-scenario phpunit5 'phpunit/phpunit:^5.7.27' --platform-php '5.6'"
+            "create-scenario phpunit5 'phpunit/phpunit:^5.7.27' --platform-php '5.6'",
+            "dependency-licenses"
         ]
     },
     "config": {
