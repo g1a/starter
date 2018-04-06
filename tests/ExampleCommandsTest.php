@@ -48,10 +48,26 @@ EOT;
     public function exampleTestCommandParameters()
     {
         return [
-            ['2 times 2 is 4', self::STATUS_OK, 'multiply', 2, 2,],
-            ['3 times 3 is 9', self::STATUS_OK, 'multiply', 3, 3,],
-            ['7 times 8 is 56', self::STATUS_OK, 'multiply', 7, 8,],
-            [self::NOT_ENOUGH_AGUMENTS_ERROR, self::STATUS_ERROR, 'multiply', 7, ],
+
+            [
+                '2 times 2 is 4', self::STATUS_OK,
+                'multiply', 2, 2,
+            ],
+
+            [
+                '3 times 3 is 9', self::STATUS_OK,
+                'multiply', 3, 3,
+            ],
+
+            [
+                '7 times 8 is 56', self::STATUS_OK,
+                'multiply', 7, 8,
+            ],
+
+            [
+                self::NOT_ENOUGH_AGUMENTS_ERROR, self::STATUS_ERROR,
+                'multiply', 7,
+            ],
         ];
     }
 
