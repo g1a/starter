@@ -38,6 +38,11 @@
         "customize": [
             "CustomizeProject\\Customizer::customize"
         ],
+        "phar:install-tools": [
+            "gem install mime-types -v 2.6.2",
+            "curl -LSs https://box-project.github.io/box2/installer.php | php"
+        ],
+        "phar:build": "box build",
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
         "unit": "phpunit --colors=always",

@@ -34,3 +34,8 @@ script:
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls -v
+
+before_deploy:
+  - composer phar:install-tools
+  - composer install --prefer-dist --no-dev --no-interaction
+  - php box.phar build

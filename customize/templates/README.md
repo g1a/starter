@@ -19,6 +19,10 @@ There are two choices for LICENSE badges:
 
 ## FINISH CUSTOMIZATION
 
+Follow the steps in this section to complete the customization of your new project.
+
+### Services
+
 Enable those services shown below that have not already been configured:
 
 | Feature                   | Setup
@@ -31,7 +35,16 @@ Enable those services shown below that have not already been configured:
 | Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
 | Dependency updates        | [Enable Dependencies.io](https://app.dependencies.io/add-project)
 
-Then, delete this section and finish customizing this README.
+### Commandline Tool
+
+To customize the name of your commandline tool:
+
+- Rename the file `example` (the executable / front controller)
+- Replace any `example` or `example.phar` in [box.json.dist](/box.json.dist) and [.gitignore](/.gitignore) with the desired name for your phar
+
+### Documentation
+
+Once you have finished setting up your project, delete this section and fill out the other sections of this README.
 
 ## Getting Started
 
@@ -47,20 +60,26 @@ List the things that are needed to install the software and how to install them.
 composer install
 ```
 
+If you wish to build the phar for this project, install the `box` phar builder via:
+
+```
+composer phar:install-tools
+```
+
 ### Installing
 
 Provide a step by step series of examples that show how to install this project.
 
-Say what the step will be:
+Say what the step will be. If the phar for this project is the primary output, and not a mere development utility, then perhaps the first step will be to build the phar:
 
 ```
-Give the example
+composer phar:build
 ```
 
-And repeat:
+It may then be sufficient to install via:
 
 ```
-until finished
+cp example.phar /usr/local/bin
 ```
 
 End with an example of getting some data out of the system or using it for a little demo.
@@ -84,7 +103,11 @@ Add additional notes about how to deploy this on a live system.
 
 ## Built With
 
+Include all that apply:
+
 * [Composer](https://getcomposer.org/) - Dependency Management
+* [Robo](https://robo.li/) - PHP Task Runner
+* [Symfony](https://symfony.com/) - PHP Framework
 
 ## Contributing
 

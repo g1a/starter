@@ -72,11 +72,18 @@ The following things are provided:
     - [CONTRIBUTING.md](/CONTRIBUTING.md)
     - [issue_template.md](/.github/issue_template.md)
     - [pull_request_template](/.github/pull_request_template.md)    
+- Commandline Tool
+  - Comes with an [example command line tool](/src/cli/ExampleCommands.php) based on the [Robo PHP task runner](https://robo.li/getting-started/), to make it easy to add commands for ad-hoc execution of your project classes.
+  - Commandline dependencies are declared in the `require-dev` section of the composer.json file, other parties that wish to use your project as a library will not unnecessarily inherit them.
+  - Build a phar version of your commandline:
+    - $ `composer phar:install-tools`
+    - $ `composer phar:build`
 - Testing
   - **Travis:** Automatically enables testing for the new project in Travis.
     - [phpunit.xml.dist](/phpunit.xml.dist): Test configuration with code coverage (html coverage report configuration is present, but commented out).
     - [Example.php](/src/Example.php): A simple class that multiplies. Replace with your own code.
     - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider. Replace with your own tests.
+    - [ExampleCommandsTest.php](/tests/ExampleCommandsTest.php): Another simple data-driven test that pulls commandline arguments from fixture data and runs it through the commandline tool. Replace with your own tests.
   - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically; all that needs to be done is to enable the Coveralls service for the new project.
   - **Appveyor:** An appveyor configuration file is provided. If an APPVEYOR_TOKEN environment variable is defined when the project is created, Appveyor testing will be automatically configured. Otherwise, it will need to be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
   - **Scrutinizer:** If a SCRUTINIZER_TOKEN environment variable is defined when the project is created, then Scrutinizer static code analysis is automatically enabled. Otherwise, the project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
@@ -89,7 +96,7 @@ The following things are provided:
 - Composer
   - **Packagist:** Project must be manually submitted to [packagist.org](https://packagist.org) in order to be able to `require` it as a dependency of some other project.
   - **Dependencies:** A [dependencies.yml](/dependencies.yml) configuration file is provided; if the project is enabled on [dependencies.io](https://www.dependencies.io/), then pull requests will automatically be created any time newer versions of the project's dependencies become available.
-  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default. This project also contains the scripts used to keep the LICENSES file up-to-date.
+  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default. This project also contains the scripts used to keep the LICENSES file up-to-date for this project's dependencies.
 
 ## Contributing
 
