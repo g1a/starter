@@ -3,7 +3,7 @@
 A starter PHP project with many services and features pre-configured. Simply use `composer create-project`, and a new GitHub repository will be created and configured to be tested on Travis CI.
 
 [![Travis CI](https://travis-ci.org/g-1-a/starter.svg?branch=master)](https://travis-ci.org/example-org/example-project)
-<!-- need to enable g-1-a org in appveyor: [![Windows CI](https://ci.appveyor.com/api/projects/status/{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}?svg=true)](https://ci.appveyor.com/project/example-org/example-project) -->
+[![Windows CI](https://ci.appveyor.com/api/projects/status/{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}?svg=true)](https://ci.appveyor.com/project/example-org/example-project)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/g-1-a/startert/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/g-1-a/startert/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/g-1-a/startert/badge.svg?branch=master)](https://coveralls.io/github/g-1-a/startert?branch=master) 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
