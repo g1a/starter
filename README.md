@@ -5,7 +5,7 @@ A starter PHP project with many services and features pre-configured. Simply use
 [![Travis CI](https://travis-ci.org/g-1-a/starter.svg?branch=master)](https://travis-ci.org/example-org/example-project)
 [![Windows CI](https://ci.appveyor.com/api/projects/status/ey7eubrwjss0gca6?svg=true)](https://ci.appveyor.com/project/greg-1-anderson/starter)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/g-1-a/starter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/g-1-a/starter/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/g-1-a/startert/badge.svg?branch=master)](https://coveralls.io/github/g-1-a/startert?branch=master) 
+[![Coverage Status](https://coveralls.io/repos/github/g-1-a/starter/badge.svg?branch=master)](https://coveralls.io/github/g-1-a/starter?branch=master) 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
 ## Usage
