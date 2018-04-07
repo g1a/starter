@@ -48,13 +48,8 @@ class ExampleCommandsTest extends TestCase
             ],
 
             [
-                '3 times 3 is 9', self::STATUS_OK,
-                'multiply', 3, 3,
-            ],
-
-            [
-                '7 times 8 is 56', self::STATUS_OK,
-                'multiply', 7, 8,
+                'Multiply two numbers together', self::STATUS_OK,
+                'list',
             ],
 
             [

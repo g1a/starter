@@ -5,6 +5,8 @@ namespace ExampleProject\Cli;
 class ExampleCommands extends \Robo\Tasks
 {
     /**
+     * Multiply two numbers together
+     *
      * @command multiply
      */
     public function multiply($a, $b)
