@@ -42,6 +42,29 @@ To customize the name of your commandline tool:
 - Rename the file `example` (the executable / front controller)
 - Replace any `example` or `example.phar` in [box.json.dist](/box.json.dist) and [.gitignore](/.gitignore) with the desired name for your phar
 
+### Release Script
+
+To automatically attach a .phar (or some other build result) to every GitHub release:
+
+- Run `travis setup releases` and answer the prompts. Answer "yes" to all yes/no questions.
+- Edit resulting `.travis.yml` file to include the missing `skip_cleanup:` and `tags:` directives.
+
+When you are done, the `deploy:` section should look something like this:
+
+```
+deploy:
+  provider: releases
+  api_key:
+    secure: KmKwmt...[REDACTED]...LlE=
+  file: example.phar
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: example-org/example-project
+```
+
+The `secure:` line should be filled in by `travis setup releases`.
+
 ### Documentation
 
 Once you have finished setting up your project, delete this section and fill out the other sections of this README.
@@ -100,6 +123,11 @@ The test suite may be run locally by way of some simple composer scripts:
 ## Deployment
 
 Add additional notes about how to deploy this on a live system.
+
+If your project has been set up to automatically deploy its .phar with every GitHub release, then you will be able to deploy by the following procedure:
+
+- Edit the `VERSION` file to contain the version to release, and commit the change.
+- Run `composer release`
 
 ## Built With
 

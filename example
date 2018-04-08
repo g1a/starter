@@ -30,7 +30,7 @@ $runner->setSelfUpdateRepository($selfUpdateRepository);
 // Prepare the variables we need to run the command
 $argv = $_SERVER['argv'];
 $appName = "ExampleProject";
-$appVersion = '0.1.0-alpha.1';
+$appVersion = file_get_contents(__DIR__ . '/VERSION');
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
 // Execute the command and return the result.

@@ -55,6 +55,9 @@
             "@unit",
             "@cs"
         ],
+        "release": [
+            "( echo && echo 'Ensure that VERSION file contains the version to release.' && echo \"Current version: $(cat VERSION)\" && tag=$(cat VERSION) && git tag \"$tag\" && git push origin \"$tag\" )"
+        ],
         "scenario": "scenarios/install",
         "post-create-project-cmd": [
             "@customize"

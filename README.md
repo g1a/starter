@@ -71,11 +71,13 @@ The following things are provided:
   - **GitHub:** Automatically creates a new repository on GitHub and pushes up your new project. Starter GitHub contribution templates are provided:
     - [CONTRIBUTING.md](/CONTRIBUTING.md)
     - [issue_template.md](/.github/issue_template.md)
-    - [pull_request_template](/.github/pull_request_template.md)    
+    - [pull_request_template](/.github/pull_request_template.md)
+  - Tag and push a release, as identified in the VERSION file.
+    - $ `composer release`
 - Commandline Tool
   - Comes with an [example command line tool](/src/cli/ExampleCommands.php) based on the [Robo PHP task runner](https://robo.li/getting-started/), to make it easy to add commands for ad-hoc execution of your project classes.
   - Commandline dependencies are declared in the `require-dev` section of the composer.json file, other parties that wish to use your project as a library will not unnecessarily inherit them.
-  - Build a phar version of your commandline:
+  - Build a phar version of your commandline tool locally:
     - $ `composer phar:install-tools`
     - $ `composer phar:build`
 - Testing
@@ -87,7 +89,7 @@ The following things are provided:
   - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically; all that needs to be done is to enable the Coveralls service for the new project.
   - **Appveyor:** An appveyor configuration file is provided. If an APPVEYOR_TOKEN environment variable is defined when the project is created, Appveyor testing will be automatically configured. Otherwise, it will need to be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
   - **Scrutinizer:** If a SCRUTINIZER_TOKEN environment variable is defined when the project is created, then Scrutinizer static code analysis is automatically enabled. Otherwise, the project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
-  - Provides handy composer scripts:
+  - Provides handy composer scripts for testing:
     - `composer test`: Run all tests.
     - `composer unit`: Run just the phpunit tests.
     - `composer lint`: Run the php linter.
@@ -105,3 +107,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for su
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+This project makes heavy use of configuration techniques and code from [Drush](https://drush.org), [Robo PHP](https://robo.li) and other [Consolidation projects](https://github.com/consolidation).

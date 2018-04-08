@@ -3,7 +3,7 @@
   "chmod": "0755",
   "compactors": [],
   "directories": ["src"],
-  "files": ["example", "README.md"],
+  "files": ["example", "README.md", "VERSION"],
   "finder": [
     {
       "name": "*.php",
