@@ -17,13 +17,14 @@ class Customizer
 
     /**
      * It is necessary to explicitly include certain Guzzle files when
-     * running code via a Composer script.
+     * running code via a Composer script. This workaround is fragile.
      */
     public static function loadGuzzleFunctions()
     {
-        require __DIR__ . '/../vendor/guzzlehttp/guzzle/src/functions_include.php';
-        require __DIR__ . '/../vendor/guzzlehttp/psr7/src/functions_include.php';
-        require __DIR__ . '/../vendor/guzzlehttp/promises/src/functions_include.php';
+        $vendor = __DIR__ . '/../vendor';
+        require_once "$vendor/guzzlehttp/guzzle/src/functions_include.php";
+        require_once "$vendor/guzzlehttp/psr7/src/functions_include.php";
+        require_once "$vendor/guzzlehttp/promises/src/functions_include.php";
     }
 
     public static function customize()
