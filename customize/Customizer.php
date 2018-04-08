@@ -189,7 +189,7 @@ class Customizer
         //    2. Register with dependencies.io (TODO API not available)
 
         // Finished
-        print "\nFinished! Visit your new project at ${$this->project_name_and_org}\n";
+        print "\nFinished! Visit your new project at {$this->project_name_and_org}\n";
     }
 
     protected function gitRemote($remote = 'origin')
