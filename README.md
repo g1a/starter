@@ -110,4 +110,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-This project makes heavy use of configuration techniques and code from [Drush](https://drush.org), [Robo PHP](https://robo.li) and other [Consolidation projects](https://github.com/consolidation).
+- This project makes heavy use of configuration techniques and code from [Drush](https://drush.org), [Robo PHP](https://robo.li) and other [Consolidation projects](https://github.com/consolidation).
+- The [KnpLabs github-api](https://github.com/KnpLabs/php-github-api) and [guzzle](http://docs.guzzlephp.org/en/stable/) made the API calls done by this project very easy.
