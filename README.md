@@ -24,6 +24,10 @@ $ export GITHUB_ORG='my-github-username-or-org'
 
 Once the new project is created, automated scripts will customize it and set up a number of serivces. See the section [Description of Features](#description-of-features) below for more information. Once the scripts have finished running, you may customize your README file and start coding!
 
+### Dependency Installation
+
+Before you begin, make sure that the [Travis CLI tool](https://github.com/travis-ci/travis.rb#installation) has been installed on your system.
+
 ### Access Token Generation
 
 Generating and exporting a personal access token for the services below is recommended, as doing this will allow the post-create-project scripts to configure and enable these services automatically.
