@@ -259,16 +259,13 @@ class Customizer
 
     protected function enableTravis($project)
     {
-        // If there is no travis token, log in with the github token
-        if (empty($this->travis_token)) {
-            passthru("travis login --no-interactive --github-token '{$this->github_token}'");
-        }
-        else {
-            passthru("travis login --no-interactive --token '{$this->travis_token}'");
-        }
+        // Log in to Travis with the github token
+        passthru("travis login --no-interactive --github-token '{$this->github_token}'");
+
         // Problem: creating github via 'hub' syncs Travis, causes a failure here.
         // repository not known to Travis CI (or no access?)
         // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
+        // Workaround is to check to see if we are syncing first.
         passthru('travis sync  --no-interactive --check');
 
         // Begin testing this repository
