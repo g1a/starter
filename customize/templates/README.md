@@ -69,6 +69,12 @@ The `secure:` line should be filled in by `travis setup releases`.
 
 Once you have finished setting up your project, delete this section and fill out the other sections of this README.
 
+Also look over:
+
+- [GitHub issue template](/.github/issue_template.md)
+- [GitHub pull request template](/.github/pull_request_template.md)
+- [Contributing guide](/CONTRIBUTING) (Decide about your code of conduct)
+
 ## Getting Started
 
 Explain how to get a copy of this project up and running on a new user's local machine.
@@ -131,7 +137,7 @@ If your project has been set up to automatically deploy its .phar with every Git
 
 ## Built With
 
-Include all that apply:
+List significant dependencies that developers of this project will interact with.
 
 * [Composer](https://getcomposer.org/) - Dependency Management
 * [Robo](https://robo.li/) - PHP Task Runner
@@ -143,7 +149,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for su
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/example-org/example-project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases](https://github.com/example-org/example-project/releases) page.
 
 ## Authors
 
