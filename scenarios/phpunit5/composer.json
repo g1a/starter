@@ -1,5 +1,5 @@
 {
-    "name": "g-1-a/starter",
+    "name": "g1a/starter",
     "description": "Template project for PHP libraries.",
     "license": "MIT",
     "authors": [
@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "consolidation/Robo": "^1.2.3",
-        "g-1-a/composer-test-scenarios": "^2",
+        "g1a/composer-test-scenarios": "^2",
         "knplabs/github-api": "^2.7",
         "php-http/guzzle6-adapter": "^1.1",
         "phpunit/phpunit": "^5.7.27",
@@ -38,6 +38,11 @@
         "customize": [
             "CustomizeProject\\Customizer::customize"
         ],
+        "phar:install-tools": [
+            "gem install mime-types -v 2.6.2",
+            "curl -LSs https://box-project.github.io/box2/installer.php | php"
+        ],
+        "phar:build": "box build",
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
         "unit": "phpunit --colors=always",
@@ -49,6 +54,9 @@
             "@lint",
             "@unit",
             "@cs"
+        ],
+        "release": [
+            "( echo && echo 'Ensure that VERSION file contains the version to release.' && echo \"Current version: $(cat VERSION)\" && tag=$(cat VERSION) && git tag \"$tag\" && git push origin \"$tag\" )"
         ],
         "scenario": "scenarios/install",
         "post-create-project-cmd": [

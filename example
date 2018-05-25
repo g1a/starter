@@ -24,7 +24,7 @@ $commandClasses = [ \ExampleProject\Cli\ExampleCommands::class ];
 $runner = new \Robo\Runner($commandClasses);
 
 // Add the self-update command to our runner
-$selfUpdateRepository = 'g-1-a/starter';
+$selfUpdateRepository = 'g1a/starter';
 $runner->setSelfUpdateRepository($selfUpdateRepository);
 
 // Prepare the variables we need to run the command

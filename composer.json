@@ -1,5 +1,5 @@
 {
-    "name": "g-1-a/starter",
+    "name": "g1a/starter",
     "description": "Template project for PHP libraries.",
     "license": "MIT",
     "authors": [
@@ -30,7 +30,7 @@
         "knplabs/github-api": "^2.7",
         "php-http/guzzle6-adapter": "^1.1",
         "phpunit/phpunit": "^5",
-        "g-1-a/composer-test-scenarios": "^2",
+        "g1a/composer-test-scenarios": "^2",
         "satooshi/php-coveralls": "^2",
         "squizlabs/php_codesniffer": "^2.8"
     },

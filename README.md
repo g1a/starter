@@ -2,7 +2,7 @@
 
 A starter PHP project with many services and features pre-configured. Simply use `composer create-project`, and a new GitHub repository will be created and configured to be tested on Travis CI.
 
-[![Travis CI](https://travis-ci.org/g-1-a/starter.svg?branch=master)](https://travis-ci.org/example-org/example-project)
+[![Travis CI](https://travis-ci.org/g1a/starter.svg?branch=master)](https://travis-ci.org/example-org/example-project)
 [![Windows CI](https://ci.appveyor.com/api/projects/status/ey7eubrwjss0gca6?svg=true)](https://ci.appveyor.com/project/greg-1-anderson/starter)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/g-1-a/starter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/g-1-a/starter/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/g-1-a/starter/badge.svg?branch=master)](https://coveralls.io/github/g-1-a/starter?branch=master) 
@@ -15,7 +15,7 @@ To get started, export your [GitHub personal access token](https://help.github.c
 $ export GITHUB_TOKEN='...'
 $ export APPVEYOR_TOKEN='...'      # Optional
 $ export SCRUTINIZER_TOKEN='...'   # Optional
-$ composer create-project g-1-a/starter my-new-project
+$ composer create-project g1a/starter my-new-project
 ```
 The new project will be owned by the currently-authenticated user. If you would like to create a new project in an organization instead, then set the `GITHUB_ORG` environment variable.
 ```
@@ -102,7 +102,7 @@ The following things are provided:
 - Composer
   - **Packagist:** Project must be manually submitted to [packagist.org](https://packagist.org) in order to be able to `require` it as a dependency of some other project.
   - **Dependencies:** A [dependencies.yml](/dependencies.yml) configuration file is provided; if the project is enabled on [dependencies.io](https://www.dependencies.io/), then pull requests will automatically be created any time newer versions of the project's dependencies become available.
-  - [Composer test scenarios](https://github.com/g-1-a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default. This project also contains the scripts used to keep the LICENSES file up-to-date for this project's dependencies.
+  - [Composer test scenarios](https://github.com/g1a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default. This project also contains the scripts used to keep the LICENSES file up-to-date for this project's dependencies.
 
 ## Contributing
 
