@@ -260,30 +260,35 @@ class Customizer
 
     protected function enableTravis($project)
     {
-        // Log in to Travis with the github token
-        passthru("travis login --no-interactive --github-token '{$this->github_token}'");
+        try {
+            // Log in to Travis with the github token
+            passthru("travis login --no-interactive --github-token '{$this->github_token}'");
 
-        // Problem: creating github via 'hub' syncs Travis, causes a failure here.
-        // repository not known to Travis CI (or no access?)
-        // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
-        // Workaround is to check to see if we are syncing first.
-        passthru('travis sync  --no-interactive --check');
+            // Problem: creating github via 'hub' syncs Travis, causes a failure here.
+            // repository not known to Travis CI (or no access?)
+            // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
+            // Workaround is to check to see if we are syncing first.
+            passthru('travis sync  --no-interactive --check');
 
-        // Begin testing this repository
-        passthru("travis enable --no-interactive", $status);
-
-        // If 'travis enable' did not work, perhaps Travis needs more
-        // time before the new GitHub repository shows up.
-        // TODO: We should *eventually* give up.
-        while ($status != 0) {
-            print "Waiting for GitHub to advertise the new repository...\n";
-            sleep(10);
-            passthru('travis sync  --no-interactive');
+            // Begin testing this repository
             passthru("travis enable --no-interactive", $status);
-        }
 
-        $travis_url = "https://travis-ci.org/$project";
-        $this->addServiceReplacement('#\[Enable Travis CI\]\([^)]*\)#', "[DONE]($travis_url)");
+            // If 'travis enable' did not work, perhaps Travis needs more
+            // time before the new GitHub repository shows up.
+            // TODO: We should *eventually* give up.
+            while ($status != 0) {
+                print "Waiting for GitHub to advertise the new repository...\n";
+                sleep(10);
+                passthru('travis sync  --no-interactive');
+                passthru("travis enable --no-interactive", $status);
+            }
+
+            $travis_url = "https://travis-ci.org/$project";
+            $this->addServiceReplacement('#\[Enable Travis CI\]\([^)]*\)#', "[DONE]($travis_url)");
+        }
+        catch (\Exception $e) {
+            $this->addServiceReplacement('#Enable Travis CI#', "Retry Travis CI");
+        }
     }
 
     protected function enableAppveyor($project)
@@ -293,19 +298,26 @@ class Customizer
             return;
         }
 
+        $appveyor_url = "https://ci.appveyor.com/project/$project";
+
         $uri = 'projects';
         $data = [
             "repositoryProvider" => "gitHub",
             "repositoryName" => "$project",
         ];
-        $this->appveyorAPI($uri, $this->appveyor_token, $data);
 
-        $appveyorStatusBadgeId = $this->appveyorStatusBadgeId($project);
-        if ($appveyorStatusBadgeId) {
-            $this->addServiceReplacement('#{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}#', $appveyorStatusBadgeId);
+        try {
+            $this->appveyorAPI($uri, $this->appveyor_token, $data);
+
+            $appveyorStatusBadgeId = $this->appveyorStatusBadgeId($project);
+            if ($appveyorStatusBadgeId) {
+                $this->addServiceReplacement('#{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}#', $appveyorStatusBadgeId);
+            }
+            $this->addServiceReplacement('#\[Enable Appveyor CI\]\([^)]*\)#', "[DONE]($appveyor_url)");
         }
-        $appveyor_url = "https://ci.appveyor.com/project/$project";
-        $this->addServiceReplacement('#\[Enable Appveyor CI\]\([^)]*\)#', "[DONE]($appveyor_url)");
+        catch (\Exception $e) {
+            $this->addServiceReplacement('#Enable Appveyor CI#', "Retry Appveyor CI");
+        }
     }
 
     protected function appveyorStatusBadgeId($project)
@@ -353,13 +365,18 @@ class Customizer
             return;
         }
 
-        $uri = 'repositories/g';
-        $data = ['name' => $project];
-        $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
+        try {
+            $uri = 'repositories/g';
+            $data = ['name' => $project];
+            $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
 
-        // Point to the completed scrutinizer configuration
-        $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/";
-        $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[DONE]($scrutinizer_url)");
+            // Point to the completed scrutinizer configuration
+            $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/";
+            $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[DONE]($scrutinizer_url)");
+        }
+        catch (\Exception $e) {
+            $this->addServiceReplacement('#Enable Scrutinizer CI#', "Retry Scrutinizer CI");
+        }
     }
 
     protected function startScrutinizerInspection($project)
