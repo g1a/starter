@@ -10,29 +10,36 @@
 // If we're running from phar load the phar autoload file.
 $pharPath = \Phar::running(true);
 if ($pharPath) {
-    require_once "$pharPath/vendor/autoload.php";
+    $autoloaderPath = "$pharPath/vendor/autoload.php";
 } else {
     if (file_exists(__DIR__.'/vendor/autoload.php')) {
-        require_once __DIR__.'/vendor/autoload.php';
+        $autoloaderPath = __DIR__.'/vendor/autoload.php';
     } elseif (file_exists(__DIR__.'/../../autoload.php')) {
-        require_once __DIR__ . '/../../autoload.php';
+        $autoloaderPath = __DIR__ . '/../../autoload.php';
+    } else {
+        die("Could not find autoloader. Run 'composer install'.");
     }
 }
+$classLoader = require $autoloaderPath;
 
-// Define our Runner, and pass it the command classes we provide.
-$commandClasses = [ \ExampleProject\Cli\ExampleCommands::class ];
-$runner = new \Robo\Runner($commandClasses);
-
-// Add the self-update command to our runner
-$selfUpdateRepository = 'g1a/starter';
-$runner->setSelfUpdateRepository($selfUpdateRepository);
-
-// Prepare the variables we need to run the command
+// Customization variables
 $argv = $_SERVER['argv'];
 $appName = "ExampleProject";
-$appVersion = file_get_contents(__DIR__ . '/VERSION');
-$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$appVersion = trim(file_get_contents(__DIR__ . '/VERSION'));
+$commandClasses = [ \ExampleProject\Cli\ExampleCommands::class ];
+$selfUpdateRepository = 'g1a/starter';
+$configPrefix = 'EXAMPLEPROJECT';
+$configFilePath = getenv($configPrefix . '_CONFIG') ?: getenv('HOME') . '/.example-project/example-project.yml';
+
+// Define our Runner, and pass it the command classes we provide.
+$runner = new \Robo\Runner($commandClasses);
+$runner
+  ->setSelfUpdateRepository($selfUpdateRepository)
+  ->setConfigurationFilename($configFilePath)
+  ->setEnvConfigPrefix($configPrefix)
+  ->setClassLoader($classLoader);
 
 // Execute the command and return the result.
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $statusCode = $runner->execute($argv, $appName, $appVersion, $output);
 exit($statusCode);

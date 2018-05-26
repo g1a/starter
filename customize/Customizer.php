@@ -132,6 +132,7 @@ class Customizer
             '/{{ORG}}/' => $this->project_org,
             '/example-project/' => $this->project_name,
             '/ExampleProject/' => $this->project_camelcase_name,
+            '/EXAMPLEPROJECT/' => strtoupper($this->project_camelcase_name),
             '/example-org/' => $this->project_org,
             "#{$composer_data['name']}#" => $this->project_org . '/' . $this->project_name,
             '#' . $this->camelCase($this->project_name) . '#' => $this->project_camelcase_name,
