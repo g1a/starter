@@ -74,7 +74,7 @@ The following things are provided:
 - Repository
   - **GitHub:** Automatically creates a new repository on GitHub and pushes up your new project. Starter GitHub contribution templates are provided:
     - [CONTRIBUTING.md](/CONTRIBUTING.md)
-    - [issue_template.md](/.github/issue_template.md)
+    - Issue templates for [bug reports](/.github/ISSUE_TEMPLATE/bug_report_or_support_request.md), [documentation](/.github/ISSUE_TEMPLATE/documentation_request.md) and [feature requests](/.github/ISSUE_TEMPLATE/feature_request.md)
     - [pull_request_template](/.github/pull_request_template.md)
   - Tag and push a release, as identified in the VERSION file.
     - $ `composer release`

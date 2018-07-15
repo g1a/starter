@@ -71,7 +71,7 @@ Once you have finished setting up your project, delete this section and fill out
 
 Also look over:
 
-- [GitHub issue template](/.github/issue_template.md)
+- [GitHub issue templates](https://github.com/{{PROJECT}}/issues/templates/edit)
 - [GitHub pull request template](/.github/pull_request_template.md)
 - [Contributing guide](/CONTRIBUTING) (Decide about your code of conduct)
 
