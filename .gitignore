@@ -1,5 +1,4 @@
 .idea/
-box.phar
+*.phar
 build
-example.phar
 vendor/
