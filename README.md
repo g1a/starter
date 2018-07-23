@@ -14,52 +14,52 @@ The things this project provides or does includes:
 
 <table>
   <tr>
-    <td>Creates GitHub project</td>
-    <td>README with customization instructions</td>
+    <td>[Creates GitHub project](#github-project)</td>
+    <td>[README with customization instructions](#readme)</td>
   </tr>
 
   <tr>
-    <td>Enables Travis testing</td>
-    <td>GitHub contributing & issue templates</td>
+    <td>[Enables Travis testing](#travis-testing)</td>
+    <td>[GitHub contributing and issue templates](#github-contributing-and-issue-templates)</td>
   </tr>
   
   <tr>
-    <td>Enables Appveyor Windows testing</td>
-    <td>Optimized composer.json</td>
+    <td>[Enables Appveyor Windows testing](#appveyor-windows-testing)</td>
+    <td>[Optimized composer.json](#optimized-composer.json)</td>
   </tr>
   
   <tr>
-    <td>Enables Scrutinizer static analysis</td>
-    <td>Data-driven unit test examples</td>
+    <td>[Enables Scrutinizer static analysis](#scrutinizer-static-analysis)</td>
+    <td>[Data-driven unit test examples](#data-driven-unit-test-examples)</td>
   </tr>
   
   <tr>
-    <td>Links to Coveralls code coverage setup</td>
-    <td>Test matrix for PHP 5.6 - 7.2</td>
+    <td>[Links to Coveralls code coverage setup](#coveralls-code-coverage)</td>
+    <td>[Test matrix for PHP 5.6 - 7.2](#test-matrix-for-php-5.6-7.2)</td>
   </tr>
   
   <tr>
-    <td>Links to Packagist setup</td>
-    <td>PSR-2 checks and PHP linting</td>
+    <td>[Links to Packagist setup](#packagist-code-distribution}</td>
+    <td>[PSR-2 checks and PHP linting](#psr-2-checks-and-php-linting)</td>
   </tr>
   
   <tr>
-    <td>Links to Dependencies.io setup</td>
-    <td>List dependency license information</td>
+    <td>[Links to Dependencies.io setup](#dependency-updates)</td>
+    <td>[List dependency license information](#dependency-license-information)</td>
   </tr>
   
   <tr>
-    <td>Commandline tool with phar builder</td>
-    <td>Automatically update copyright year</td>
+    <td>[Commandline tool with phar builder](#commandline-tool)</td>
+    <td>[Automatically update copyright year](#automatically-update-copyright-year)</td>
   </tr>
   
   <tr>
-    <td>Phar self:update command</td>
-    <td>Release script (after manual VERSION bump)</td>
+    <td>[Phar self:update command](#phar-self-update-command)</td>
+    <td>[Release script (after manual VERSION bump)](#release-script)</td>
   </tr>
   
   <tr>
-    <td>Auto-deploy phar on GitHub instructions</td>
+    <td>[Auto-deploy phar on GitHub instructions](#auto-deploy-phar-on-github)</td>
     <td> </td>
   </tr>
 
@@ -121,7 +121,7 @@ After the `composer create-project` command runs to create your new project from
 
 In order for this to work, you must define a `GITHUB_TOKEN` environment variable as described in the [usage](#usage) section.
 
-### README with customization instructions ###
+### README ###
 
 Your new project will be set up with the outline for a project README, complete with status badges, ready to be customized. Follow the instructions provided in your new project to complete the customization steps.
 
@@ -145,7 +145,7 @@ Your new project will be set up with the outline for a project README, complete 
 
 [Packagist](https://packagist.org/) is the main repository for Composer projects. The customization instructions for your project includes a link you may follow to register your project in this repository.
 
-### Dependencies.io automated updates ###
+### Dependency updates ###
 
 [Dependencies.io](https://www.dependencies.io/) is a service that will automate dependency updates for your project. The customization instructions for your project includes a link to authenticate with dependencies.io; if you enable this service, then a pull request will be created on your project automatically every time any of your Composer dependencies publish a new release.
 
@@ -165,7 +165,7 @@ In addition to providing unit tests with phpunit, your new project will also aut
 
 These features may be accessed via `composer cs` and `composer lint` commands, respectively. A [.editorconfig](/.editorconfig) file is provided pre-configured to maintain PSR-2 coventions in editors that support this feature.
 
-### GitHub contributing & issue templates ###
+### GitHub contributing and issue templates ###
 
 GitHub has a feature that allows projects to define [pull request and issue templates](https://help.github.com/articles/about-issue-and-pull-request-templates/) which will be presented to users when a new issue or pull request is opened. Also, a [contributing document](https://help.github.com/articles/setting-guidelines-for-repository-contributors/) can be provided to explain project conventions to new users.
 
@@ -212,57 +212,6 @@ The `composer.json` file included in the project pre-configures a few settings f
 ### Optimized Composer dist releases ###
 
 Your project's [.gitattributes](/.gitattributes) file comes pre-configured to exclude unnecessary files in Composer `dist` releases.
-
-## Old Feature Description
-
-This project comes with a number of configuration files already set up for a number of services. A Composer post-install hook makes further modifications, and, where possible, makes API calls to complete the setup for some services.
-
-
-This list is being rewritten above, and will be deleted once that effort is complete.
-
-- Project information
-  - [composer.json](/composer.json): Automatically customized with project-specific information.
-    - Project name (taken from `create-project` project name argument)
-    - Author name and email address (from git configuration)
-  - [README.md](/customize/templates/README.md): Example template with badges to get you started.
-  - [CHANGELOG.md](/CHANGELOG.md): Blank slate provided in the hopes that releases may be recorded here.
-  - [LICENSE](/LICENSE): Defaults to MIT. Will automatically be updated with dependency licenses and copyright year every time 'composer update' is run.
-- Project metadata
-  - [.editorconfig](/.editorconfig): Set up for PSR-2 conventions for compliant editors.
-  - [.gitattributes](/.gitattributes): Ensures that tests, build results and so on are not exported to Packagist.
-  - [.gitignore](/.gitignore): Ensures that vendor directory and so on is not committed to the repository.
-- Repository
-  - **GitHub:** Automatically creates a new repository on GitHub and pushes up your new project. Starter GitHub contribution templates are provided:
-    - [CONTRIBUTING.md](/CONTRIBUTING.md)
-    - Issue templates for [bug reports](/.github/ISSUE_TEMPLATE/bug_report_or_support_request.md), [documentation](/.github/ISSUE_TEMPLATE/documentation_request.md) and [feature requests](/.github/ISSUE_TEMPLATE/feature_request.md)
-    - [pull_request_template](/.github/pull_request_template.md)
-  - Tag and push a release, as identified in the VERSION file.
-    - $ `composer release`
-- Commandline Tool
-  - Comes with an [example command line tool](/src/cli/ExampleCommands.php) based on the [Robo PHP task runner](https://robo.li/getting-started/), to make it easy to add commands for ad-hoc execution of your project classes.
-  - Commandline dependencies are declared in the `require-dev` section of the composer.json file, other parties that wish to use your project as a library will not unnecessarily inherit them.
-  - Build a phar version of your commandline tool locally:
-    - $ `composer phar:install-tools`
-    - $ `composer phar:build`
-- Testing
-  - **Travis:** Automatically enables testing for the new project in Travis.
-    - [phpunit.xml.dist](/phpunit.xml.dist): Test configuration with code coverage (html coverage report configuration is present, but commented out).
-    - [Example.php](/src/Example.php): A simple class that multiplies. Replace with your own code.
-    - [ExampleTest.php](/tests/ExampleTest.php): A simple data-driven test that pulls fixture data from a data provider. Replace with your own tests.
-    - [ExampleCommandsTest.php](/tests/ExampleCommandsTest.php): Another simple data-driven test that pulls commandline arguments from fixture data and runs it through the commandline tool. Replace with your own tests.
-  - **Coveralls:** Project must be manually configured on [coveralls.io](https://coveralls.io). PHPUnit and Travis are already configured to export coverage data to Coveralls automatically; all that needs to be done is to enable the Coveralls service for the new project.
-  - **Appveyor:** An appveyor configuration file is provided. If an APPVEYOR_TOKEN environment variable is defined when the project is created, Appveyor testing will be automatically configured. Otherwise, it will need to be manually enabled on [appveyor](https://www.appveyor.com/) if Windows testing is desired.
-  - **Scrutinizer:** If a SCRUTINIZER_TOKEN environment variable is defined when the project is created, then Scrutinizer static code analysis is automatically enabled. Otherwise, the project must be manually enabled on [scrutinizer-ci.com](https://scrutinizer-ci.com).
-  - Provides handy composer scripts for testing:
-    - `composer test`: Run all tests.
-    - `composer unit`: Run just the phpunit tests.
-    - `composer lint`: Run the php linter.
-    - `composer cs`: Run the code sniffer to check for PSR-2 compliance.
-    - `composer cbf`: Fix code style violations where possible.
-- Composer
-  - **Packagist:** Project must be manually submitted to [packagist.org](https://packagist.org) in order to be able to `require` it as a dependency of some other project.
-  - **Dependencies:** A [dependencies.yml](/dependencies.yml) configuration file is provided; if the project is enabled on [dependencies.io](https://www.dependencies.io/), then pull requests will automatically be created any time newer versions of the project's dependencies become available.
-  - [Composer test scenarios](https://github.com/g1a/composer-test-scenarios) are configured to allow tests to be written for PHPUnit 6, and still use PHPUnit 5 for testing on PHP 5.6. Highest/lowest testing is also configured by default. This project also contains the scripts used to keep the LICENSES file up-to-date for this project's dependencies.
 
 ## Contributing
 
