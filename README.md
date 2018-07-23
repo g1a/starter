@@ -15,7 +15,7 @@ The things this project provides or does includes:
 <table>
   <tr>
     <td><a href="#github-project">Creates GitHub project</a></td>
-    <td><a href="#readme">README with customization instructions</a></td>
+    <td><a href="#readme-template">README with customization instructions</a></td>
   </tr>
 
   <tr>
@@ -25,7 +25,7 @@ The things this project provides or does includes:
   
   <tr>
     <td><a href="#appveyor-windows-testing">Enables Appveyor Windows testing</a></td>
-    <td><a href="#optimized-composer.json">Optimized composer.json</a></td>
+    <td><a href="#optimized-composerjson">Optimized composer.json</a></td>
   </tr>
   
   <tr>
@@ -54,7 +54,7 @@ The things this project provides or does includes:
   </tr>
   
   <tr>
-    <td><a href="#phar-self-update-command">Phar self:update command</a></td>
+    <td><a href="#phar-selfupdate-command">Phar self:update command</a></td>
     <td><a href="#release-script">Release script (after manual VERSION bump)</a></td>
   </tr>
   
@@ -121,7 +121,7 @@ After the `composer create-project` command runs to create your new project from
 
 In order for this to work, you must define a `GITHUB_TOKEN` environment variable as described in the [usage](#usage) section.
 
-### README ###
+### README template ###
 
 Your new project will be set up with the outline for a project README, complete with status badges, ready to be customized. Follow the instructions provided in your new project to complete the customization steps.
 
