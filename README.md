@@ -8,6 +8,61 @@ A starter PHP project with many services and features pre-configured. Simply use
 [![Coverage Status](https://coveralls.io/repos/github/g-1-a/starter/badge.svg?branch=master)](https://coveralls.io/github/g-1-a/starter?branch=master) 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
+## Features
+
+<table>
+  <tr>
+    <td>Creates GitHub repository</td>
+    <td>README with customization instructions</td>
+  </tr>
+
+  <tr>
+    <td>Enables Travis testing</td>
+    <td>GitHub contributing & issue templates</td>
+  </tr>
+  
+  <tr>
+    <td>Enables Appveyor Windows testing</td>
+    <td>Optimized composer.json</td>
+  </tr>
+  
+  <tr>
+    <td>Enables Scrutinizer static analysis</td>
+    <td>Data-driven unit test examples</td>
+  </tr>
+  
+  <tr>
+    <td>Links to Coveralls code coverage setup</td>
+    <td>Test matrix for PHP 5.6 - 7.2</td>
+  </tr>
+  
+  <tr>
+    <td>Links to Packagist setup</td>
+    <td>PSR-2 checks and PHP linting</td>
+  </tr>
+  
+  <tr>
+    <td>Links to Dependencies.io setup</td>
+    <td>List dependency license information</td>
+  </tr>
+  
+  <tr>
+    <td>Commandline tool with phar builder</td>
+    <td>Automatically update copyright year</td>
+  </tr>
+  
+  <tr>
+    <td>Phar self:update command</td>
+    <td>Release script (after manual VERSION bump)</td>
+  </tr>
+  
+  <tr>
+    <td>Auto-deploy phar on GitHub instructions</td>
+    <td> </td>
+  </tr>
+
+</table>
+
 ## Usage
 
 To get started, export your [GitHub personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) and then create a new project.
