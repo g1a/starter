@@ -14,52 +14,52 @@ The things this project provides or does includes:
 
 <table>
   <tr>
-    <td>[Creates GitHub project](#github-project)</td>
-    <td>[README with customization instructions](#readme)</td>
+    <td><a href="#github-project">Creates GitHub project</a></td>
+    <td><a href="#readme">README with customization instructions</a></td>
   </tr>
 
   <tr>
-    <td>[Enables Travis testing](#travis-testing)</td>
-    <td>[GitHub contributing and issue templates](#github-contributing-and-issue-templates)</td>
+    <td><a href="#travis-testing">Enables Travis testing</a></td>
+    <td><a href="#github-contributing-and-issue-templates">GitHub contributing and issue templates</a></td>
   </tr>
   
   <tr>
-    <td>[Enables Appveyor Windows testing](#appveyor-windows-testing)</td>
-    <td>[Optimized composer.json](#optimized-composer.json)</td>
+    <td><a href="#appveyor-windows-testing">Enables Appveyor Windows testing</a></td>
+    <td><a href="#optimized-composer.json">Optimized composer.json</a></td>
   </tr>
   
   <tr>
-    <td>[Enables Scrutinizer static analysis](#scrutinizer-static-analysis)</td>
-    <td>[Data-driven unit test examples](#data-driven-unit-test-examples)</td>
+    <td><a href="#scrutinizer-static-analysis">Enables Scrutinizer static analysis</a></td>
+    <td><a href="#data-driven-unit-test-examples">Data-driven unit test examples</a></td>
   </tr>
   
   <tr>
-    <td>[Links to Coveralls code coverage setup](#coveralls-code-coverage)</td>
-    <td>[Test matrix for PHP 5.6 - 7.2](#test-matrix-for-php-5.6-7.2)</td>
+    <td><a href="#coveralls-code-coverage">Links to Coveralls code coverage setup</a></td>
+    <td><a href="#test-matrix-for-php-56---72">Test matrix for PHP 5.6 - 7.2</a></td>
   </tr>
   
   <tr>
-    <td>[Links to Packagist setup](#packagist-code-distribution}</td>
-    <td>[PSR-2 checks and PHP linting](#psr-2-checks-and-php-linting)</td>
+    <td><a href="#packagist-code-distribution">Links to Packagist setup</a></td>
+    <td><a href="#psr-2-checks-and-php-linting">PSR-2 checks and PHP linting</a></td>
   </tr>
   
   <tr>
-    <td>[Links to Dependencies.io setup](#dependency-updates)</td>
-    <td>[List dependency license information](#dependency-license-information)</td>
+    <td><a href="#dependency-updates">Links to Dependencies.io setup</a></td>
+    <td><a href="#dependency-license-information">List dependency license information</a></td>
   </tr>
   
   <tr>
-    <td>[Commandline tool with phar builder](#commandline-tool)</td>
-    <td>[Automatically update copyright year](#automatically-update-copyright-year)</td>
+    <td><a href="#commandline-tool">Commandline tool with phar builder</a></td>
+    <td><a href="#automatically-update-copyright-year">Automatically update copyright year</a></td>
   </tr>
   
   <tr>
-    <td>[Phar self:update command](#phar-self-update-command)</td>
-    <td>[Release script (after manual VERSION bump)](#release-script)</td>
+    <td><a href="#phar-self-update-command">Phar self:update command</a></td>
+    <td><a href="#release-script">Release script (after manual VERSION bump)</a></td>
   </tr>
   
   <tr>
-    <td>[Auto-deploy phar on GitHub instructions](#auto-deploy-phar-on-github)</td>
+    <td><a href="#auto-deploy-phar-on-github">Auto-deploy phar on GitHub instructions</a></td>
     <td> </td>
   </tr>
 
