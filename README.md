@@ -55,12 +55,12 @@ The things this project provides or does includes:
   
   <tr>
     <td><a href="#phar-selfupdate-command">Phar self:update command</a></td>
-    <td><a href="#release-script">Release script (after manual VERSION bump)</a></td>
+    <td><a href="#release-script">Release script with auto VERSION bump</a></td>
   </tr>
   
   <tr>
     <td><a href="#auto-deploy-phar-on-github">Auto-deploy phar on GitHub instructions</a></td>
-    <td> </td>
+    <td><a href="#configuration-files">Configuration files</a></td>
   </tr>
 
 </table>
@@ -183,9 +183,13 @@ Whenver your dependency license information is updated, the Copyright year for y
 
 ### Release script ###
 
-Your project includes a script `composer release` that will automatically tag your project and create a release on GitHub. You must manually commit the desired version number for your project in the [VERSION](VERSION) file before you run this script.
+Your project includes a script `composer release` that will automatically tag your project and create a release on GitHub. The VERSION file is automatically updated for you.
 
-Typically, your VERSION file should be set to the next patch release of your project, followed by `-dev`. For example, if the most recent release of your project is `0.1.0`, then your VERSION file should contain `0.1.1-dev`. Remove the `-dev` to make a release, and then add one to the patch version and replace the `-dev` after your release has rolled out successfully.
+Typically, your VERSION file should be set to the next release of your project, followed by `-dev`. For example, if the most recent release of your project is `0.1.0`, then your VERSION file should contain `0.1.1-dev`. The `composer release` script will automatically remove the `-dev` before making the release, and once done will increment the patch release by one and replace the `-dev` on the end. To update to the next minor release, change your VERSION file to `0.2.0-dev` and run `composer release`. Once completed, the VERSION file will then read `0.2.1-dev`.
+
+If you followed the customization instructions to automatically attach your phar to every release, then your phar releases will report stable versions, and your locally-build phars will report `-dev` versions.
+
+Note that this simple release script does not support `alpha`, `beta` and other [SemVer](https://semver.org/) pre-release designations.
 
 ### Commandline tool ###
 
@@ -212,6 +216,10 @@ The `composer.json` file included in the project pre-configures a few settings f
 ### Optimized Composer dist releases ###
 
 Your project's [.gitattributes](/.gitattributes) file comes pre-configured to exclude unnecessary files in Composer `dist` releases.
+
+### Configuration files ###
+
+Your project will automatically read in a configuration file in yaml format that you may use for providing command option default values and storing other user-overridable settings. See [consolidation/config](https://github.com/consolidation/config) for more information.
 
 ## Contributing
 
