@@ -25,12 +25,16 @@ trait CommandTesterTrait
     /**
      * Prepare our $argv array; put the app name in $argv[0] followed by
      * the command name and all command arguments and options.
+     *
+     * @param array $functionParameters should usually be func_get_args()
+     * @param int $leadingParameterCount the number of function parameters
+     *   that are NOT part of argv. Default is 2 (expected content and
+     *   expected status code).
      */
-    protected function argv($functionParameters)
+    protected function argv($functionParameters, $leadingParameterCount = 2)
     {
         $argv = $functionParameters;
-        array_shift($argv);
-        array_shift($argv);
+        $argv = array_slice($argv, $leadingParameterCount);
         array_unshift($argv, $this->appName);
 
         return $argv;

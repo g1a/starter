@@ -13,7 +13,7 @@ class ExampleCommandsTest extends TestCase implements CommandTesterInterface
     protected $commandClasses;
 
     /**
-     * Instantiate a new runner
+     * Prepare to test our commandfile
      */
     public function setUp()
     {
@@ -23,36 +23,47 @@ class ExampleCommandsTest extends TestCase implements CommandTesterInterface
     }
 
     /**
-     * Data provider for testExample.
+     * Data provider for testExampleCommands.
      *
-     * Return an array of arrays, each of which contains the parameter
-     * values to be used in one invocation of the testExample test function.
+     * Return an array of arrays, each of which contains the data for one test.
+     * The parameters in each array should be:
+     *
+     *   - Expected output (actual output must CONTAIN this string)
+     *   - Expected function status code
+     *   - argv
+     *
+     * All of the remaining parameters after the first two are interpreted
+     * to be the argv value to pass to the command. The application name
+     * is automatically unshifted into argv[0] first.
      */
     public function exampleTestCommandParameters()
     {
         return [
 
             [
-                '2 times 2 is 4', self::STATUS_OK,
+                '2 times 2 is 4',
+                self::STATUS_OK,
                 'multiply', 2, 2,
             ],
 
             [
-                'Multiply two numbers together', self::STATUS_OK,
+                'Multiply two numbers together',
+                self::STATUS_OK,
                 'list',
             ],
 
             [
-                'Not enough arguments (missing: "b").', self::STATUS_ERROR,
+                'Not enough arguments (missing: "b").',
+                self::STATUS_ERROR,
                 'multiply', 7,
             ],
         ];
     }
 
     /**
-     * Test our example class. Each time this function is called, it will
-     * be passed data from the data provider function idendified by the
-     * dataProvider annotation.
+     * Test our example commandfile class. Each time this function is called,
+     * it will be passed the expected output and expected status code; the
+     * remainder of the arguments passed will be used as $argv.
      *
      * @dataProvider exampleTestCommandParameters
      */
