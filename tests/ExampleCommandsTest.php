@@ -5,19 +5,12 @@ namespace ExampleProject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class ExampleCommandsTest extends TestCase
+class ExampleCommandsTest extends TestCase implements CommandTesterInterface
 {
+    use CommandTesterTrait;
+
     /** @var string[] */
     protected $commandClasses;
-
-    /** @var string */
-    protected $appName;
-
-    /** @var string */
-    protected $appVersion;
-
-    const STATUS_OK = 0;
-    const STATUS_ERROR = 1;
 
     /**
      * Instantiate a new runner
@@ -26,10 +19,7 @@ class ExampleCommandsTest extends TestCase
     {
         // Store the command classes we are going to test
         $this->commandClasses = [ \ExampleProject\Cli\ExampleCommands::class ];
-
-        // Define our invariants for our test
-        $this->appName = 'TestFixtureApp';
-        $this->appVersion = '1.0.1';
+        $this->setupCommandTester('TestFixtureApp', '1.0.1');
     }
 
     /**
@@ -68,44 +58,15 @@ class ExampleCommandsTest extends TestCase
      */
     public function testExampleCommands($expectedOutput, $expectedStatus, $variable_args)
     {
+        // Set this to the path to a fixture configuration file if you'd like to use one.
+        $configurationFile = false;
+
         // Create our argv array and run the command
         $argv = $this->argv(func_get_args());
-        list($actualOutput, $statusCode) = $this->execute($argv);
+        list($actualOutput, $statusCode) = $this->execute($argv, $this->commandClasses, $configurationFile);
 
         // Confirm that our output and status code match expectations
         $this->assertContains($expectedOutput, $actualOutput);
         $this->assertEquals($expectedStatus, $statusCode);
-    }
-
-    /**
-     * Prepare our $argv array; put the app name in $argv[0] followed by
-     * the command name and all command arguments and options.
-     */
-    protected function argv($functionParameters)
-    {
-        $argv = $functionParameters;
-        array_shift($argv);
-        array_shift($argv);
-        array_unshift($argv, $this->appName);
-
-        return $argv;
-    }
-
-    /**
-     * Simulated front controller
-     */
-    protected function execute($argv)
-    {
-        // Define a global output object to capture the test results
-        $output = new BufferedOutput();
-
-        // We can only call `Runner::execute()` once; then we need to tear down.
-        $runner = new \Robo\Runner($this->commandClasses);
-        $statusCode = $runner->execute($argv, $this->appName, $this->appVersion, $output);
-        \Robo\Robo::unsetContainer();
-
-        // Return the output and status code.
-        $actualOutput = trim($output->fetch());
-        return [$actualOutput, $statusCode];
     }
 }
