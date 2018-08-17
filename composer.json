@@ -21,11 +21,11 @@
     },
     "require": {
         "php": ">=5.5.0",
+        "consolidation/Robo": "^1.2.3",
         "symfony/finder": "^2.8|^3|^4",
         "symfony/filesystem": "^2.8|^3|^4"
     },
     "require-dev": {
-        "consolidation/Robo": "^1.2.3",
         "symfony/console": "^2.8|^3|^4",
         "knplabs/github-api": "^2.7",
         "php-http/guzzle6-adapter": "^1.1",

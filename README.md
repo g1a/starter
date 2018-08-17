@@ -201,6 +201,8 @@ If you do not want the commandline tool, simply delete the directories `src/Cli`
 
 The customization instructions for your project include a single command you may run to automatically set up auto-deployment of your project's phar with every GitHub release.
 
+If you are just going to be using the commandline tool for ad-hoc testing, and you do not want to build a phar, then you can move the `consolidation/Robo` project from `require` to `require-dev`.
+
 ### Phar self:update command ###
 
 Users who download your phar file from GitHub may obtain the most recent version available by running the `self:update` command, which is automatically provided in your new project.
