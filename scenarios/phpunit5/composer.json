@@ -21,11 +21,11 @@
     },
     "require": {
         "php": ">=5.5.0",
+        "consolidation/Robo": "^1.2.3",
         "symfony/finder": "^2.8|^3|^4",
         "symfony/filesystem": "^2.8|^3|^4"
     },
     "require-dev": {
-        "consolidation/Robo": "^1.2.3",
         "g1a/composer-test-scenarios": "^2",
         "knplabs/github-api": "^2.7",
         "php-http/guzzle6-adapter": "^1.1",
@@ -56,7 +56,7 @@
             "@cs"
         ],
         "release": [
-            "( echo && echo 'Ensure that VERSION file contains the version to release.' && echo \"Current version: $(cat VERSION)\" && tag=$(cat VERSION) && git tag \"$tag\" && git push origin \"$tag\" )"
+            "( sed -e 's/-dev$//' VERSION > VERSION.tmp && mv -f VERSION.tmp VERSION && ver=\"$(cat VERSION)\" && git add VERSION && git commit -m \"Version $ver\" && git tag \"$ver\" && git push origin \"$ver\" && a=( ${ver//./ } ) && ((a[2]++)) && echo \"${a[0]}.${a[1]}.${a[2]}-dev\" > VERSION && git add VERSION && git commit -m \"Back to -dev\" && git push origin master )"
         ],
         "scenario": "scenarios/install",
         "post-create-project-cmd": [
