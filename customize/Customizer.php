@@ -172,7 +172,7 @@ class Customizer
         $this->enableTesting($this->project_name_and_org);
 
         // Replace contents of template files again with service replacements
-        $this->replaceContentsOfAllTemplateFiles($this->serviceReplacements);
+        $this->serviceReplacements($this->serviceReplacements);
 
         // Commit modifications to template project.
         // TODO: Make a more robust commit message.
@@ -432,7 +432,17 @@ class Customizer
         $this->addServiceReplacement('#\[Create GitHub repository\]\([^)]*\)#', "[DONE]($repository_url)");
     }
 
-    protected function replaceContentsOfAllTemplateFiles($replacements, $template_dir = false)
+    protected function replaceContentsOfAllTemplateFiles($replacements, $template_dir)
+    {
+        return $this->operateOnAllProjectFiles($replacements, [$this, 'replaceProjectFileOrTemplate'], $template_dir);
+    }
+
+    protected function serviceReplacements($replacements)
+    {
+        return $this->operateOnAllProjectFiles($replacements, [$this, 'replaceContentsOfFile']);
+    }
+
+    protected function operateOnAllProjectFiles($replacements, $fn, $parameter = false)
     {
         $replacements = array_filter($replacements);
         if (empty($replacements)) {
@@ -444,18 +454,16 @@ class Customizer
             ->exclude('vendor')
             ->in(dirname(__DIR__));
         foreach ($files as $file) {
-            $this->replaceContentsOfFile($replacements, $file, $template_dir);
+            $fn($replacements, $file, $parameter);
         }
     }
 
-    protected function replaceContentsOfFile($replacements, $file, $template_dir)
+    protected function replaceProjectFileOrTemplate($replacements, $file, $template_dir)
     {
         $source_file = $file->getRealPath();
-        if ($template_dir) {
-            $template_file = $template_dir . '/' . $file->getRelativePathname();
-            if (file_exists($template_file)) {
-                $source_file = $template_file;
-            }
+        $template_file = $template_dir . '/' . $file->getRelativePathname();
+        if (file_exists($template_file)) {
+            $source_file = $template_file;
         }
         if (empty($source_file)) {
             return;
@@ -463,10 +471,22 @@ class Customizer
         $contents = file_get_contents($source_file);
         $altered_contents = preg_replace(array_keys($replacements), array_values($replacements), $contents);
         $altered = ($altered_contents != $contents);
-        $replaced = ($source_file == $file->getRealPath());
-        if ($altered || $replaced) {
-            $action_label = $altered ? 'Edit ' : 'Replaced ';
-            print $action_label . $file->getRelativePathname() . "\n";
+        $action_label = $altered ? 'Edited ' : 'Copied ';
+        print $action_label . $file->getRelativePathname() . "\n";
+        file_put_contents($file->getRealPath(), $altered);
+    }
+
+    protected function replaceContentsOfFile($replacements, $file)
+    {
+        $source_file = $file->getRealPath();
+        if (empty($source_file)) {
+            return;
+        }
+        $contents = file_get_contents($source_file);
+        $altered_contents = preg_replace(array_keys($replacements), array_values($replacements), $contents);
+        $altered = ($altered_contents != $contents);
+        if ($altered) {
+            print 'Edited ' . $file->getRelativePathname() . "\n";
             file_put_contents($file->getRealPath(), $altered);
         }
     }
