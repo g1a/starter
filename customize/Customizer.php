@@ -461,9 +461,12 @@ class Customizer
             return;
         }
         $contents = file_get_contents($source_file);
-        $altered = preg_replace(array_keys($replacements), array_values($replacements), $contents);
-        if ($altered != $contents) {
-            print "Edit " . $file->getRelativePathname() . "\n";
+        $altered_contents = preg_replace(array_keys($replacements), array_values($replacements), $contents);
+        $altered = ($altered_contents != $contents);
+        $replaced = ($source_file == $file->getRealPath());
+        if ($altered || $replaced) {
+            $action_label = $altered ? 'Edit ' : 'Replaced ';
+            print $action_label . $file->getRelativePathname() . "\n";
             file_put_contents($file->getRealPath(), $altered);
         }
     }

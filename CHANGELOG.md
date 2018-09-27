@@ -1,8 +1,9 @@
 # Changelog
 
-### 1.2.0 - 2018 Sept 26
+### 1.2.0 ~ 1.2.2 - 2018 Sept 26
 
 * Switch to building phars with [humbug/box](https://github.com/humbug/box)
+* Fix template copying bug
 
 ### 1.1.0 - 2018 May 26 
 
