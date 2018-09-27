@@ -450,8 +450,10 @@ class Customizer
         }
         $files = Finder::create()
             ->files()
+            ->ignoreDotFiles(false)
             ->exclude('customize')
             ->exclude('vendor')
+            ->exclude('tools')
             ->in(dirname(__DIR__));
         foreach ($files as $file) {
             $fn($replacements, $file, $parameter);
