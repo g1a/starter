@@ -193,7 +193,7 @@ Note that this simple release script does not support `alpha`, `beta` and other 
 
 ### Commandline tool ###
 
-Your project will be set up to build a commandline tool, and also includes commands to package it as a phar. If your project is a library, you might still wish to include a commandline tool to provide ad-hoc usage to your library functions, either for testing purposes, or perhaps to directly edit any data stores managed by your library. The commandline tool dependencies are declared in the `require-dev` section, so they will not be pulled in when your project is included as the dependency of some other project.
+Your project will be set up to build a commandline tool, and also includes commands to package it as a phar using the [humbug/box](https://github.com/humbug/box) project. If your project is a library, you might still wish to include a commandline tool to provide ad-hoc usage to your library functions, either for testing purposes, or perhaps to directly edit any data stores managed by your library. The commandline tool dependencies are declared in the `require-dev` section, so they will not be pulled in when your project is included as the dependency of some other project.
 
 If you do not want the commandline tool, simply delete the directories `src/Cli` and `tests/ExampleCommandsTest.php`, and also remove the `phar:*` commands in your composer.json file, and the files `example` and `box.json.dist`.
 

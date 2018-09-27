@@ -20,13 +20,10 @@
         }
     },
     "require": {
-        "php": ">=5.5.0",
-        "consolidation/Robo": "^1.2.3",
-        "symfony/finder": "^2.8|^3|^4",
-        "symfony/filesystem": "^2.8|^3|^4"
+        "php": ">=5.5.0"
     },
     "require-dev": {
-        "symfony/console": "^2.8|^3|^4",
+        "consolidation/Robo": "^1.2.3",
         "knplabs/github-api": "^2.7",
         "php-http/guzzle6-adapter": "^1.1",
         "phpunit/phpunit": "^5",
@@ -39,10 +36,10 @@
             "CustomizeProject\\Customizer::customize"
         ],
         "phar:install-tools": [
-            "gem install mime-types -v 2.6.2",
-            "curl -LSs https://box-project.github.io/box2/installer.php | php"
+            "mkdir -p tools",
+            "curl -L https://github.com/humbug/box/releases/download/3.0.0/box.phar -o tools/box",
+            "chmod +x tools/box"
         ],
-        "phar:build": "box build",
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
         "unit": "phpunit --colors=always",
@@ -56,7 +53,7 @@
             "@cs"
         ],
         "release": [
-            "( sed -e 's/-dev$//' VERSION > VERSION.tmp && mv -f VERSION.tmp VERSION && ver=\"$(cat VERSION)\" && git add VERSION && git commit -m \"Version $ver\" && git tag \"$ver\" && git push origin \"$ver\" && a=( ${ver//./ } ) && ((a[2]++)) && echo \"${a[0]}.${a[1]}.${a[2]}-dev\" > VERSION && git add VERSION && git commit -m \"Back to -dev\" && git push origin master )"
+            "release VERSION"
         ],
         "scenario": "scenarios/install",
         "post-create-project-cmd": [
