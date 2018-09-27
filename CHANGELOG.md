@@ -1,11 +1,17 @@
 # Changelog
 
-### Unreleased
+### 1.2.0 - 2018 Sept 26
 
-* List pending changes here.
+* Switch to building phars with [humbug/box](https://github.com/humbug/box)
 
-### 0.1.0 - 2018/Mar/13
+### 1.1.0 - 2018 May 26 
 
-* Customize source files when creating new project
-* Create new GitHub repository and push code to it
-* Enable Travis testing for new repository
+* Add capability for configuration files
+
+### 1.0.2 - 2018 Apr 10
+
+* List other docs that must be customized after a new project is created from the template.
+
+### 1.0.1 - 2018 Apr 8
+
+* Remove 'tests' from .gitattributes, as we need that folder to customize our new projects.
