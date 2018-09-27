@@ -40,7 +40,6 @@
             "curl -L https://github.com/humbug/box/releases/download/3.0.0/box.phar -o tools/box",
             "chmod +x tools/box"
         ],
-        "phar:build": "env PATH=tools:$PATH box compile",
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
         "unit": "phpunit --colors=always",

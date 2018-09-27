@@ -37,5 +37,6 @@ after_success:
 
 before_deploy:
   - composer phar:install-tools
+  - composer require --no-script consolidation/Robo
   - composer install --prefer-dist --no-dev --no-interaction
-  - composer phar:build
+  - tools/box compile
