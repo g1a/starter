@@ -472,10 +472,9 @@ class Customizer
         }
         $contents = file_get_contents($source_file);
         $altered_contents = preg_replace(array_keys($replacements), array_values($replacements), $contents);
-        $altered = ($altered_contents != $contents);
-        $action_label = $altered ? 'Edited ' : 'Copied ';
+        $action_label = ($altered_contents != $contents) ? 'Edited ' : 'Copied ';
         print $action_label . $file->getRelativePathname() . "\n";
-        file_put_contents($file->getRealPath(), $altered);
+        file_put_contents($file->getRealPath(), $altered_contents);
     }
 
     protected function replaceContentsOfFile($replacements, $file)
@@ -486,10 +485,9 @@ class Customizer
         }
         $contents = file_get_contents($source_file);
         $altered_contents = preg_replace(array_keys($replacements), array_values($replacements), $contents);
-        $altered = ($altered_contents != $contents);
-        if ($altered) {
+        if ($altered_contents != $contents) {
             print 'Edited ' . $file->getRelativePathname() . "\n";
-            file_put_contents($file->getRealPath(), $altered);
+            file_put_contents($file->getRealPath(), $altered_contents);
         }
     }
 
