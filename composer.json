@@ -20,13 +20,10 @@
         }
     },
     "require": {
-        "php": ">=5.5.0",
-        "consolidation/Robo": "^1.2.3",
-        "symfony/finder": "^2.8|^3|^4",
-        "symfony/filesystem": "^2.8|^3|^4"
+        "php": ">=5.5.0"
     },
     "require-dev": {
-        "symfony/console": "^2.8|^3|^4",
+        "consolidation/Robo": "^1.2.3",
         "knplabs/github-api": "^2.7",
         "php-http/guzzle6-adapter": "^1.1",
         "phpunit/phpunit": "^5",
