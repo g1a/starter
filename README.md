@@ -80,6 +80,10 @@ The new project will be owned by the currently-authenticated user. If you would 
 ```
 $ export GITHUB_ORG='my-github-username-or-org'
 ```
+The new project will work only with php 7.1 and later. If you need to use an earlier version of php (as far back as php 5.5), then instead run:
+```
+$ composer create-project g1a/starter my-new-project:^1
+```
 
 Once the new project is created, automated scripts will customize it and set up a number of serivces. See the section [Description of Features](#description-of-features) below for more information. Once the scripts have finished running, you may customize your README file and start coding!
 

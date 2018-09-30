@@ -14,11 +14,8 @@ matrix:
       env: 'DEPENCENCIES=highest'
     - php: 7.2
     - php: 7.1
-    - php: 7.0.11
-    - php: 5.6
-      env: 'SCENARIO=phpunit5'
-    - php: 5.6
-      env: 'SCENARIO=phpunit5 DEPENDENCIES=lowest'
+    - php: 7.1
+      env: DEPENDENCIES=lowest'
 
 sudo: false
 
@@ -39,4 +36,4 @@ before_deploy:
   - composer phar:install-tools
   - composer require --no-scripts consolidation/Robo
   - composer install --prefer-dist --no-dev --no-interaction
-  - tools/box compile
+  - composer phar:build
