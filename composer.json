@@ -36,10 +36,10 @@
             "CustomizeProject\\Customizer::customize"
         ],
         "phar:install-tools": [
-            "mkdir -p tools",
-            "curl -L https://github.com/humbug/box/releases/download/3.0.0/box.phar -o tools/box",
-            "chmod +x tools/box"
+            "gem install mime-types -v 2.6.2",
+            "curl -LSs https://box-project.github.io/box2/installer.php | php"
         ],
+        "phar:build": "box build",
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
         "unit": "phpunit --colors=always",
