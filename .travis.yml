@@ -39,4 +39,4 @@ before_deploy:
   - composer phar:install-tools
   - composer require --no-scripts consolidation/Robo
   - composer install --prefer-dist --no-dev --no-interaction
-  - tools/box compile
+  - tools/box build

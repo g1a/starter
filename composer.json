@@ -37,9 +37,11 @@
         ],
         "phar:install-tools": [
             "gem install mime-types -v 2.6.2",
-            "curl -LSs https://box-project.github.io/box2/installer.php | php"
+            "curl -LSs https://box-project.github.io/box2/installer.php | php",
+            "mkdir -p tools",
+            "mv -f box.phar tools/box"
         ],
-        "phar:build": "box build",
+        "phar:build": "env PATH=tools:$PATH box build",
         "cs": "phpcs --standard=PSR2 -n src",
         "cbf": "phpcbf --standard=PSR2 -n src",
         "unit": "phpunit --colors=always",
