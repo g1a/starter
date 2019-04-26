@@ -44,7 +44,7 @@ The things this project provides or does includes:
   </tr>
   
   <tr>
-    <td><a href="#dependency-updates">Links to Dependencies.io setup</a></td>
+    <td><a href="#dependency-updates">Links to Violinist.io setup</a></td>
     <td><a href="#dependency-license-information">List dependency license information</a></td>
   </tr>
   
@@ -99,7 +99,7 @@ Generating and exporting a personal access token for the services below is recom
 
 ### Manual Service Configuration
 
-If the personal access token for these services is not set up, then the service may be manually configured later. In addition, this project is also configured for use with Packagist, Dependencies.io and Coveralls; these services only need to be manually authorized through their web interface to enable them for projects created with this template.
+If the personal access token for these services is not set up, then the service may be manually configured later. In addition, this project is also configured for use with Packagist, Violinist.io and Coveralls; these services only need to be manually authorized through their web interface to enable them for projects created with this template.
 
 Follow the links in the table below to configure the services you would like to use.
 
@@ -111,7 +111,7 @@ Follow the links in the table below to configure the services you would like to 
 | Static analysis           | [Enable Scrutinizer CI](https://scrutinizer-ci.com/g/new)
 | Code coverage             | [Enable Coveralls](https://coveralls.io/repos/new)
 | Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
-| Dependency updates        | [Enable Dependencies.io](https://app.dependencies.io/add-project)
+| Dependency updates        | [Enable Violinist.io](https://violinist.io/node/add/project)
 
 ## Explanation of Features ###
 
@@ -147,7 +147,7 @@ Your new project will be set up with the outline for a project README, complete 
 
 ### Dependency updates ###
 
-[Dependencies.io](https://www.dependencies.io/) is a service that will automate dependency updates for your project. The customization instructions for your project includes a link to authenticate with dependencies.io; if you enable this service, then a pull request will be created on your project automatically every time any of your Composer dependencies publish a new release.
+[Violinist.io](https://violinist.io/) is a service that will automate dependency updates for your project. The customization instructions for your project includes a link to authenticate with violinist.io; if you enable this service, then a pull request will be created on your project automatically every time any of your Composer dependencies publish a new release.
 
 ### Data-driven unit test examples ###
 
