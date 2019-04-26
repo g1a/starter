@@ -187,7 +187,7 @@ class Customizer
 
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
-        //    2. Register with dependencies.io (TODO API not available)
+        //    2. Register with violinist.io (TODO API not available)
 
         // Finished
         print "\nFinished! Visit your new project at https://github.com/{$this->project_name_and_org}\n";

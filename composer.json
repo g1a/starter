@@ -74,6 +74,15 @@
         }
     },
     "extra": {
+        "violinist": {
+            "allow_updates_beyond_constraint": 1,
+            "assignees": [],
+            "blacklist": [],
+            "one_pull_request_per_package": 1,
+            "timeframe_disallowed": "0",
+            "timezone": "+0000",
+            "update_with_dependencies": 1
+        },
         "branch-alias": {
             "dev-master": "1.x-dev"
         }

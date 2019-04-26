@@ -33,7 +33,7 @@ Enable those services shown below that have not already been configured:
 | Static analysis           | [Enable Scrutinizer CI](https://scrutinizer-ci.com/g/new)
 | Code coverage             | [Enable Coveralls](https://coveralls.io/repos/new)
 | Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
-| Dependency updates        | [Enable Dependencies.io](https://app.dependencies.io/add-project)
+| Dependency updates        | [Enable Violinist.io](https://violinist.io/node/add/project)
 
 ### Commandline Tool
 
