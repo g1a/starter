@@ -3,6 +3,7 @@
 namespace CustomizeProject;
 
 use Github\HttpClient\Message\ResponseMediator;
+use GuzzleHttp\Client;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -171,6 +172,8 @@ class Customizer
         //    4. Enable coveralls (TODO API not available)
         $this->enableTesting($this->project_name_and_org);
 
+        $this->enableViolinist($this->project_name_and_org);
+
         // Replace contents of template files again with service replacements
         $this->serviceReplacements($this->serviceReplacements);
 
@@ -256,6 +259,30 @@ class Customizer
         $this->enableTravis($project);
         $this->enableAppveyor($project);
         $this->enableScrutinizer($project);
+    }
+
+    protected function enableViolinist($project)
+    {
+        $client = new Client();
+        $headers = [
+            'X-Violinist-Provider-Token' => $this->github_token,
+            'Content-type' => 'application/vnd.api+json',
+        ];
+        try {
+            $result = $client->post('https://violinist.io/api/node/project', [
+                'headers' => $headers,
+                'body' => json_encode([
+                    'data' => [
+                        'type' => 'node--project',
+                        'attributes' => [
+                            'repo' => sprintf('https://github.com/%s', $project),
+                        ]
+                    ]
+                ]),
+            ]);
+        } catch (\Throwable $e) {
+            // @todo Maybe show some sort of error why it failed?
+        }
     }
 
     protected function enableTravis($project)

@@ -3,12 +3,13 @@
 Put a one-line description of your project here.
 
 [![Travis CI](https://travis-ci.org/example-org/example-project.svg?branch=master)](https://travis-ci.org/example-org/example-project)
+[![Violinist enabled](https://img.shields.io/badge/violinist-enabled-brightgreen.svg)](https://violinist.io)
 [![Windows CI](https://ci.appveyor.com/api/projects/status/{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}?svg=true)](https://ci.appveyor.com/project/example-org/example-project)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/example-org/example-project/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/example-org/example-project/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/example-org/example-project/badge.svg?branch=master)](https://coveralls.io/github/example-org/example-project?branch=master) 
+[![Coverage Status](https://coveralls.io/repos/github/example-org/example-project/badge.svg?branch=master)](https://coveralls.io/github/example-org/example-project?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
-<!-- 
+<!--
 There are two choices for LICENSE badges:
 
 1. License using shields.io (above): Can contain any text you want, and has no prerequisites, but must be manually updated if you change the license.
