@@ -2,6 +2,8 @@
 
 namespace ExampleProject\Cli;
 
+use Robo\Symfony\ConsoleIO;
+
 class ExampleCommands extends \Robo\Tasks
 {
     /**
@@ -9,11 +11,11 @@ class ExampleCommands extends \Robo\Tasks
      *
      * @command multiply
      */
-    public function multiply($a, $b)
+    public function multiply(ConsoleIO $io, $a, $b)
     {
         $model = new \ExampleProject\Example($a);
         $result = $model->multiply($b);
 
-        $this->io()->text("$a times $b is $result");
+        $io->text("$a times $b is $result");
     }
 }

@@ -15,7 +15,7 @@ class ExampleCommandsTest extends TestCase implements CommandTesterInterface
     /**
      * Prepare to test our commandfile
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Store the command classes we are going to test
         $this->commandClasses = [ \ExampleProject\Cli\ExampleCommands::class ];
@@ -77,7 +77,7 @@ class ExampleCommandsTest extends TestCase implements CommandTesterInterface
         list($actualOutput, $statusCode) = $this->execute($argv, $this->commandClasses, $configurationFile);
 
         // Confirm that our output and status code match expectations
-        $this->assertContains($expectedOutput, $actualOutput);
+        $this->assertStringContainsString($expectedOutput, $actualOutput);
         $this->assertEquals($expectedStatus, $statusCode);
     }
 }
