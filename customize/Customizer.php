@@ -67,9 +67,6 @@ class Customizer
     {
         // See the README for instructions on creating access tokens
         $this->github_token = getenv('GITHUB_TOKEN');
-        $this->travis_token = getenv('TRAVIS_TOKEN');
-        $this->scrutinizer_token = getenv('SCRUTINIZER_TOKEN');
-        $this->appveyor_token = getenv('APPVEYOR_TOKEN');
 
         $this->showProgress("Authenticate with GitHub");
 
@@ -179,15 +176,6 @@ class Customizer
         // Push initial commit with unmodified template
         $this->push();
 
-        $this->showProgress("Enable testing");
-
-        // Testing:
-        //    1. Enable testing on Travis via `travis enable`
-        //    2. Enable testing on AppVeyor
-        //    3. Enable testing via Scrutinizer
-        //    4. Enable coveralls (TODO API not available)
-        $this->enableTesting($this->project_name_and_org);
-
         $this->showProgress("Record which services were configured");
 
         // Replace contents of template files again with service replacements
@@ -201,12 +189,8 @@ class Customizer
         // Push updated changes to fire off a build
         $this->push();
 
-        // We need to explicitly tell Scrutinizer to start analyzing.
-        $this->startScrutinizerInspection($this->project_name_and_org);
-
         // Composer:
         //    1. Register with packagist?  (TODO API not available)
-        //    2. Register with violinist.io (TODO API not available)
 
         $this->showProgress("Finished!");
 
@@ -270,167 +254,6 @@ class Customizer
     protected function addServiceReplacement($keyRegex, $value)
     {
         $this->serviceReplacements[$keyRegex] = $value;
-    }
-
-    protected function enableTesting($project)
-    {
-        $this->enableTravis($project);
-        $this->enableAppveyor($project);
-        $this->enableScrutinizer($project);
-    }
-
-    protected function enableTravis($project)
-    {
-        try {
-            // Log in to Travis with the github token
-            passthru("travis login --no-interactive --github-token '{$this->github_token}'");
-
-            // Problem: creating github via 'hub' syncs Travis, causes a failure here.
-            // repository not known to Travis CI (or no access?)
-            // triggering sync: 409: "{\"message\":\"Sync already in progress. Try again later.\"}"
-            // Workaround is to check to see if we are syncing first.
-            passthru('travis sync  --no-interactive --check');
-
-            // Begin testing this repository
-            passthru("travis enable --no-interactive", $status);
-
-            // If 'travis enable' did not work, perhaps Travis needs more
-            // time before the new GitHub repository shows up.
-            // TODO: We should *eventually* give up.
-            while ($status != 0) {
-                print "Waiting for GitHub to advertise the new repository...\n";
-                sleep(10);
-                passthru('travis sync  --no-interactive');
-                passthru("travis enable --no-interactive", $status);
-            }
-
-            $travis_url = "https://travis-ci.org/$project";
-            $this->addServiceReplacement('#\[Enable Travis CI\]\([^)]*\)#', "[DONE]($travis_url)");
-        }
-        catch (\Exception $e) {
-            $this->addServiceReplacement('#Enable Travis CI#', "Retry Travis CI");
-        }
-    }
-
-    protected function enableAppveyor($project)
-    {
-        if (!$this->appveyor_token) {
-            print "No APPVEYOR_TOKEN environment variable provided; skipping Appveyor setup.\n";
-            return;
-        }
-
-        $appveyor_url = "https://ci.appveyor.com/project/$project";
-
-        $uri = 'projects';
-        $data = [
-            "repositoryProvider" => "gitHub",
-            "repositoryName" => "$project",
-        ];
-
-        try {
-            $this->appveyorAPI($uri, $this->appveyor_token, $data);
-
-            $appveyorStatusBadgeId = $this->appveyorStatusBadgeId($project);
-            if ($appveyorStatusBadgeId) {
-                $this->addServiceReplacement('#{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}#', $appveyorStatusBadgeId);
-            }
-            $this->addServiceReplacement('#\[Enable Appveyor CI\]\([^)]*\)#', "[DONE]($appveyor_url)");
-        }
-        catch (\Exception $e) {
-            $this->addServiceReplacement('#Enable Appveyor CI#', "Retry Appveyor CI");
-        }
-    }
-
-    protected function appveyorStatusBadgeId($project)
-    {
-        if (!$this->appveyor_token) {
-            return false;
-        }
-        $projectSlug = $this->project_name;
-        $uri = "projects/$project/settings";
-        $appveyorInfo = $this->appveyorAPI($uri, $this->appveyor_token);
-        if (!isset($appveyorInfo['settings']['statusBadgeId'])) {
-            return false;
-        }
-        return $appveyorInfo['settings']['statusBadgeId'];
-    }
-
-    function appveyorAPI($uri, $token, $data = [], $method = 'GET')
-    {
-        $url = "https://ci.appveyor.com/api/$uri";
-        $headers = [
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'my-org/my-app',
-            'Authorization' => "Bearer " . $token,
-        ];
-        $guzzleParams = [ 'headers' => $headers, ];
-        if (!empty($data)) {
-            $method = 'POST';
-            $guzzleParams['json'] = $data;
-        }
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request($method, $url, $guzzleParams);
-        $resultData = json_decode($res->getBody(), true);
-        $httpCode = $res->getStatusCode();
-        if ($httpCode >= 300) {
-            throw new \Exception("Appveyor API call $uri failed with $httpCode");
-        }
-
-        return $resultData;
-    }
-
-    protected function enableScrutinizer($project)
-    {
-        if (!$this->scrutinizer_token) {
-            print "No SCRUTINIZER_TOKEN environment variable provided; skipping Scrutinizer setup.\n";
-            return;
-        }
-
-        try {
-            $uri = 'repositories/g';
-            $data = ['name' => $project];
-            $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
-
-            // Point to the completed scrutinizer configuration
-            $scrutinizer_url = "https://scrutinizer-ci.com/g/$project/";
-            $this->addServiceReplacement('#\[Enable Scrutinizer CI\]\([^)]*\)#', "[DONE]($scrutinizer_url)");
-        }
-        catch (\Exception $e) {
-            $this->addServiceReplacement('#Enable Scrutinizer CI#', "Retry Scrutinizer CI");
-        }
-    }
-
-    protected function startScrutinizerInspection($project)
-    {
-        if (!$this->scrutinizer_token) {
-            return;
-        }
-        $uri = "repositories/g/$project/inspections";
-        $data = ['branch' => 'main'];
-        $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
-    }
-
-    function scrutinizerAPI($uri, $token, $data = [], $method = 'GET')
-    {
-        $url = "https://scrutinizer-ci.com/api/$uri?access_token=$token";
-        $headers = [
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'my-org/my-app',
-        ];
-        $guzzleParams = [ 'headers' => $headers, ];
-        if (!empty($data)) {
-            $method = 'POST';
-            $guzzleParams['json'] = $data;
-        }
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request($method, $url, $guzzleParams);
-        $resultData = json_decode($res->getBody(), true);
-        $httpCode = $res->getStatusCode();
-        if ($httpCode >= 300) {
-            throw new \Exception("Scrutinizer API call $uri failed with $httpCode");
-        }
-
-        return $resultData;
     }
 
     protected function createGitHubRepository($path, $target, $github_org = '')
