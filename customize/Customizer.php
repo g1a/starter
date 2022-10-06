@@ -234,7 +234,7 @@ class Customizer
         return $remote;
     }
 
-    protected function push($remote = 'origin', $branch = 'master')
+    protected function push($remote = 'origin', $branch = 'main')
     {
         $remote = $this->injectGitHubToken($remote);
         $this->passthru("git push -u '$remote' $branch");
@@ -406,7 +406,7 @@ class Customizer
             return;
         }
         $uri = "repositories/g/$project/inspections";
-        $data = ['branch' => 'master'];
+        $data = ['branch' => 'main'];
         $this->scrutinizerAPI($uri, $this->scrutinizer_token, $data);
     }
 
