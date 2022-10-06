@@ -2,10 +2,6 @@
 
 Put a one-line description of your project here.
 
-[![Travis CI](https://travis-ci.org/example-org/example-project.svg?branch=master)](https://travis-ci.org/example-org/example-project)
-[![Windows CI](https://ci.appveyor.com/api/projects/status/{{PUT_APPVEYOR_STATUS_BADGE_ID_HERE}}?svg=true)](https://ci.appveyor.com/project/example-org/example-project)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/example-org/example-project/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/example-org/example-project/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/example-org/example-project/badge.svg?branch=master)](https://coveralls.io/github/example-org/example-project?branch=master) 
 [![License](https://img.shields.io/badge/license-MIT-408677.svg)](LICENSE)
 
 <!-- 
@@ -28,12 +24,7 @@ Enable those services shown below that have not already been configured:
 | Feature                   | Setup
 | ------------------------- | ----------------
 | Collaborative repository  | [Create GitHub repository](https://github.com/new)
-| Linux permutation testing | [Enable Travis CI](https://travis-ci.org/profile)
-| Windows testing           | [Enable Appveyor CI](https://ci.appveyor.com/projects/new)
-| Static analysis           | [Enable Scrutinizer CI](https://scrutinizer-ci.com/g/new)
-| Code coverage             | [Enable Coveralls](https://coveralls.io/repos/new)
 | Package manager           | [Register with Packagist](https://packagist.org/packages/submit)
-| Dependency updates        | [Enable Violinist.io](https://violinist.io/node/add/project)
 
 ### Commandline Tool
 
