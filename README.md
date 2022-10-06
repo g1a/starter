@@ -54,7 +54,7 @@ The new project will be owned by the currently-authenticated user. If you would 
 ```
 $ export GITHUB_ORG='my-github-username-or-org'
 ```
-The new project will work only with php 8.0 and later. If you need to use an earlier version of php (as far back as php 5.5), then instead run:
+The new project will work only with php 8.0 and later. If you need to use an earlier version of php (as far back as php 7.1), then instead run:
 ```
 $ composer create-project g1a/starter my-new-project:^2
 ```
