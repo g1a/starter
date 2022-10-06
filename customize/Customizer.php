@@ -23,7 +23,6 @@ class Customizer
     {
         $vendor = __DIR__ . '/../vendor';
         require_once "$vendor/guzzlehttp/guzzle/src/functions_include.php";
-        require_once "$vendor/guzzlehttp/psr7/src/functions_include.php";
         require_once "$vendor/guzzlehttp/promises/src/functions_include.php";
     }
 
@@ -49,7 +48,7 @@ class Customizer
     public function createGitHubClient($token)
     {
         $this->gitHubAPI = new \Github\Client();
-        $this->gitHubAPI->authenticate($token, null, \Github\Client::AUTH_HTTP_TOKEN);
+        $this->gitHubAPI->authenticate($token, null, \Github\AuthMethod::CLIENT_ID);
     }
 
     /**
@@ -72,6 +71,8 @@ class Customizer
         $this->scrutinizer_token = getenv('SCRUTINIZER_TOKEN');
         $this->appveyor_token = getenv('APPVEYOR_TOKEN');
 
+        $this->showProgress("Authenticate with GitHub");
+
         // TODO: Notify and quit if github_token is not provided, or fails to authenticate.
         $this->createGitHubClient($this->github_token);
 
@@ -88,6 +89,8 @@ class Customizer
         $this->project_camelcase_name = $this->camelCase($this->project_name);
         $this->project_org = getenv('GITHUB_ORG') ?: $this->authenticatedUsername();
         $this->project_name_and_org = $this->project_org . '/' . $this->project_name;
+
+        $this->showProgress("Set up local working copy of git repository");
 
         // If the existing repository was not preserved, then create
         // a new empty repository now. Otherwise, just fix up the
@@ -107,6 +110,8 @@ class Customizer
             // Remove the 'composer' remote if it exists.
             @passthru("git remote remove composer 2>/dev/null");
         }
+
+        $this->showProgress("Customize project contents");
 
         // Composer customizations:
         //    1. Change project name
@@ -145,12 +150,18 @@ class Customizer
         $template_dir = $this->working_dir . '/customize/templates';
         $this->replaceContentsOfAllTemplateFiles($replacements, $template_dir);
 
+        $this->showProgress("Clean up customization code");
+
         // Additional cleanup:
         //    1. Remove 'customize' directory
         $this->cleanupCustomization();
 
+        $this->showProgress("Update dependencies");
+
         // Update our dependencies after customizing
         $this->passthru('composer -n update');
+
+        $this->showProgress("Run tests");
 
         // Sanity checks post-customization
         //    1. Dump the autoload file
@@ -158,11 +169,17 @@ class Customizer
         $this->passthru('composer -n dumpautoload');
         $this->passthru('composer -n test');
 
+        $this->showProgress("Create GitHub repository");
+
         // Create a GitHub repository via GitHub API
         $this->createGitHubRepository($this->working_dir, $this->project_name, getenv('GITHUB_ORG'));
 
+        $this->showProgress("Push to GitHub repository");
+
         // Push initial commit with unmodified template
         $this->push();
+
+        $this->showProgress("Enable testing");
 
         // Testing:
         //    1. Enable testing on Travis via `travis enable`
@@ -170,6 +187,8 @@ class Customizer
         //    3. Enable testing via Scrutinizer
         //    4. Enable coveralls (TODO API not available)
         $this->enableTesting($this->project_name_and_org);
+
+        $this->showProgress("Record which services were configured");
 
         // Replace contents of template files again with service replacements
         $this->serviceReplacements($this->serviceReplacements);
@@ -189,8 +208,10 @@ class Customizer
         //    1. Register with packagist?  (TODO API not available)
         //    2. Register with violinist.io (TODO API not available)
 
+        $this->showProgress("Finished!");
+
         // Finished
-        print "\nFinished! Visit your new project at https://github.com/{$this->project_name_and_org}\n";
+        print "\nVisit your new project at https://github.com/{$this->project_name_and_org}\n";
     }
 
     protected function gitRemote($remote = 'origin')
@@ -502,5 +523,10 @@ class Customizer
         if ($status != 0) {
             throw new \Exception('Command failed with exit code ' . $status);
         }
+    }
+
+    protected function showProgress($section)
+    {
+        print "\n:::\n::: $section\n:::\n";
     }
 }
