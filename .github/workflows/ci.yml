@@ -36,6 +36,9 @@ jobs:
   backward-compatibility:
     name: Backward Compatibility
 
+    # Remove the 'if' line below once you have a 1.0.0 release
+    if: ${{ false }}
+
     runs-on: ubuntu-latest
 
     steps:
@@ -60,7 +63,7 @@ jobs:
           composer --working-dir=tools require roave/backward-compatibility-check:^7
 
       - name: Run roave/backward-compatibility-check
-        run: ./tools/vendor/bin/roave-backward-compatibility-check --from=4.0.0
+        run: ./tools/vendor/bin/roave-backward-compatibility-check --from=1.0.0
 
   tests:
     name: Tests
