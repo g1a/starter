@@ -67,7 +67,7 @@ Generating and exporting a personal access token for the services below is recom
 
 | Export                         | Token Generation URL       
 | ------------------------------ | -------------------------- 
-| exoirt GITHUB_TOKEN='...'      | [Generate GitHub token](https://github.com/settings/tokens)
+| export GITHUB_TOKEN='...'      | [Generate GitHub token](https://github.com/settings/tokens)
 
 ### Manual Service Configuration
 
