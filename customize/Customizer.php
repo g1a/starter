@@ -31,14 +31,11 @@ class Customizer
         static::loadGuzzleFunctions();
         $customizer = new self();
 
-        try
-        {
+        try {
             $customizer->run();
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             print $e->getMessage() . "\n";
-            exit ($e->getCode());
+            exit($e->getCode());
         }
     }
 
@@ -97,8 +94,7 @@ class Customizer
             $this->passthru('git add .');
             $this->passthru('git rm -r --cached customize');
             $this->passthru('git commit -m "Initial commit of unmodified template project [ci skip]."');
-        }
-        else {
+        } else {
             // If we are re-using an existing repo, make sure that the
             // origin is set correctly. If there is no origin, then
             // 'hub' will set the origin.
@@ -230,10 +226,29 @@ class Customizer
         return json_decode($composer_contents, true);
     }
 
+    /**
+     * Format the name of the project for Composer/Packagist compatibility.
+     *
+     * @param string $name
+     *   The Incoming name, which could contain incompatible characters.
+     *
+     * @return string
+     *   The name formatted for Composer/Packagist.
+     *
+     * @see https://packagist.org/about
+     */
+    public function formatNameForPackagist(string $name = ''): string
+    {
+        return array_reduce(explode('/', $name), function ($carry, $segment) {
+            return $carry === "" ? $this->formatNameSegment($segment) :
+                $carry . "/" . $this->formatNameSegment($segment);
+        }, "");
+    }
+
     protected function adjustComposerJson($composer_path, $composer_data)
     {
         // Fix the name
-        $composer_data['name'] = $this->project_name_and_org;
+        $composer_data['name'] = $this->formatNameForPackagist($this->project_name_and_org);
 
         // Remove parts of autoloader that are no longer going to be used.
         unset($composer_data['autoload']['psr-4']['CustomizeProject\\']);
@@ -302,6 +317,16 @@ class Customizer
         foreach ($files as $file) {
             $fn($replacements, $file, $parameter);
         }
+    }
+
+    /**
+     * Remove characters not allowed by Packagist.
+     * @param string $name
+     * @return string
+     */
+    public function formatNameSegment(string $name): string
+    {
+        return preg_replace('/[^a-z0-9.\-_]/i', '', strtolower($name));
     }
 
     protected function replaceProjectFileOrTemplate($replacements, $file, $template_dir)
